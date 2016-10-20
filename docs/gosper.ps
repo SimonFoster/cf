@@ -1,0 +1,3240 @@
+%!PS-Adobe-3.0
+%%Creator: A2ps version 4.2
+%%CreationDate: Mon May 13 14:01:01 2002
+%%Pages: (atend)
+%%DocumentFonts: Courier Courier-Bold Helvetica Helvetica-Bold
+%%EndComments
+% Copyright (c) 1992, 1993, Miguel Santana, santana@imag.fr
+
+/$a2psdict 100 dict def
+$a2psdict begin
+
+% General macros.
+/xdef {exch def} bind def
+/getfont {exch findfont exch scalefont} bind def
+
+% Create Courier backspace font
+/backspacefont {
+    /Courier findfont dup length dict begin
+	{ % forall
+	    1 index /FID eq { pop pop } { def } ifelse
+	} forall
+	currentdict /UniqueID known { % if
+	    /UniqueID UniqueID 16#800000 xor def
+	} if
+	CharStrings length 1 add dict begin
+	    CharStrings { def } forall
+	    /backspace { -600 0 0 0 0 0 setcachedevice } bind def
+	    currentdict
+	end
+	/CharStrings exch def
+	/Encoding Encoding 256 array copy def
+	Encoding 8 /backspace put
+	currentdict
+    end
+    definefont pop
+} bind def
+
+% FUNCTIONS
+
+% Function newfile: Initialize file printing.
+/newfile
+{ /filenm xdef
+  /filenmwidth filenm stringwidth pop def
+  /filenmfont
+       filenmwidth filenmroom gt
+       {
+	       filenmfontname
+	       filenmfontsize filenmroom mul filenmwidth div
+	     getfont
+       }
+       { stdfilenmfont }
+     ifelse
+  def
+} bind def
+
+% Function header: prints page header. no page
+% is passed as argument.
+/header
+  { upperx side get  uppery side get headersize sub 1 add  moveto
+    datefont setfont
+    gsave
+      upperx side get uppery side get moveto
+      0 headersize 2 div neg rmoveto 
+      headersize setlinewidth
+      0.95 setgray
+      pagewidth 0 rlineto stroke
+    grestore
+    gsave
+      datefontsize headermargin rmoveto
+      date show				% date/hour
+    grestore
+    gsave
+      pnum cvs pop				% page pop up
+        pagewidth (Page 999) stringwidth pop sub
+        headermargin
+	  rmoveto
+      (Page ) show pnum show		% page number
+    grestore
+    empty pnum copy pop
+    gsave
+      filenmfont setfont
+         filenmroom filenm stringwidth pop sub 2 div datewidth add
+          bodymargin 2 mul 
+        add 
+        headermargin
+      rmoveto
+        filenm show			% file name
+      grestore
+    } bind def
+
+% Function border: prints border page
+/border 
+{ upperx side get uppery side get moveto
+  gsave				% print four sides
+    0.7 setlinewidth		% of the square
+    pagewidth 0 rlineto
+    0 pageheight neg rlineto
+    pagewidth neg 0 rlineto
+    closepath stroke
+  grestore
+} bind def
+
+% Function hborder: completes border of the header.
+/hborder 
+{ gsave
+	0.7 setlinewidth
+	0 headersize neg rmoveto
+	pagewidth 0 rlineto
+	stroke
+  grestore
+} bind def
+
+% Function sheetnumber: prints the sheet number.
+/sheetnumber
+    { sheetnumberx sheetnumbery moveto
+      datefont setfont
+      pnum cvs
+	  dup stringwidth pop (0) stringwidth pop sub neg 0 rmoveto show
+      empty pnum copy pop
+    } bind def
+
+% Function prlogin: prints the login id of the requestor.
+/prlogin
+    { loginx loginy moveto
+      datefont setfont
+      dup stringwidth pop neg 0 rmoveto show
+    } bind def
+
+% Function currentdate: prints the current date.
+/currentdate
+    { datex datey moveto
+      datefont setfont
+      (Printed: ) show
+      currdate show
+    } bind def
+
+% Function filename_footer: prints the file name at bottom of page.
+/filenamefooter
+    { filenamefooterx filenamefootery moveto
+      datefont setfont
+      filenm center show
+    } bind def
+
+% Function center: centers text.
+/center
+    { dup stringwidth pop
+      2 div neg 0 rmoveto
+    } bind def
+
+% Function s: print a source line
+/s  { show
+      /y0 y0 bodyfontsize sub def
+      x0 y0 moveto
+    } bind def
+
+% Functions b and st: change to bold or standard font
+/b  { show
+      boldfont setfont
+    } bind def
+/st { show
+      bodyfont setfont
+    } bind def
+
+% Strings used to make easy printing numbers
+/pnum 12 string def
+/empty 12 string def
+
+% Global initializations
+
+/CourierBack backspacefont
+/filenmfontname /Helvetica-Bold def
+/inch {72 mul} bind def
+
+% Initialize page description variables.
+/x0 0 def
+/y0 0 def
+/sheetheight 11.64 inch def
+/sheetwidth 8.27 inch def
+/margin 1.4 inch def
+/rightmargin margin 3 div def
+/leftmargin margin 2 mul 3 div def
+/twinfiles false def
+/date () def
+/currdate (May 13 2002 14:01) def
+/login (Printed from plover.com) def
+%%EndProlog
+
+/docsave save def
+/landscape false def
+/twinpages false def
+% Character size for fonts.
+/filenmfontsize 15 def
+/datefontsize filenmfontsize 0.8 mul def
+/datefont /Helvetica datefontsize getfont def
+/datewidth datefont setfont currdate stringwidth pop def
+/stdfilenmfont filenmfontname filenmfontsize getfont def
+/headermargin filenmfontsize 0.25 mul def
+/headersize 0.0 def
+/bodyfontsize 10 def
+/bodyfont /CourierBack bodyfontsize getfont def
+/boldfont /Courier-Bold bodyfontsize getfont def
+/bodymargin bodyfontsize 0.7 mul def
+/bodyfont /CourierBack bodyfontsize getfont def
+/lines 72 def
+/columns 81 def
+
+% Logical page attributs (a half of a sheet).
+/pagewidth
+   bodyfont setfont (0) stringwidth pop columns mul bodymargin dup add add
+   def
+/pageheight
+   bodyfontsize lines mul bodymargin dup add add headersize add
+   def
+/filenmroom
+      pagewidth
+      filenmfontsize 4 mul datewidth add (Page 999) stringwidth pop add
+    sub
+  def
+
+% Coordinates for upper corner of a logical page and for
+% sheet number. Coordinates depend on format mode used.
+/topmargin margin twinpages {3} {2} ifelse div def
+/side 0 def
+
+% Portrait format
+/upperx [ leftmargin dup ] def
+/sheetnumbery topmargin datefontsize 2 mul sub def
+/sheetnumberx sheetwidth rightmargin sub datefontsize sub def
+/datey sheetnumbery def
+/datex leftmargin def
+
+% Only one logical page
+/uppery [ sheetheight topmargin sub dup ] def
+/datey sheetnumbery def
+/datex leftmargin def
+/sheetcenterx sheetwidth 2 div def
+/filenamefootery datey def
+/filenamefooterx sheetcenterx def
+/loginy filenmfontsize 2 div uppery side get add def
+/loginx sheetnumberx def
+/date (May 13 2002 14:00) def
+(stdin) newfile
+%%Page: 1 1
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( ) s
+( ) s
+( ) s
+(                                Appendix 2) s
+( ) s
+( ) s
+(                       Continued Fraction Arithmetic) s
+( ) s
+( ) s
+(                                   by) s
+( ) s
+(                               Bill Gosper) s
+( ) s
+( ) s
+( ) s
+( Abstract:  Contrary to everybody, this self contained paper will show that) s
+( continued fractions are not only perfectly amenable to arithmetic, they are) s
+( amenable to perfect arithmetic.) s
+( ) s
+( ) s
+( ) s
+(                     Output) s
+( ) s
+( Suppose we want the continued fraction for an exact rational number,) s
+( say 2.54, the number of centimeters per inch.  We can execute) s
+( Euclid's algorithm neatly as follows:) s
+( ) s
+( 254             Initially, 2.54 = 254/100) s
+( 100     2       Short divide 100 into 254, getting 2, remainder 54) s
+(  54     1       54 into 100 goes once, remainder 46) s
+(  46     1       46 into 54) s
+(   8     5       8 into 46) s
+(   6     1) s
+(   2     3) s
+(   0             We incidentally have found that gcd\(254,100\) = 2.) s
+( ) s
+( This says that the continued fraction of 2.54 is 2 1 1 5 1 3, or) s
+( ) s
+(         2.54 = 2 + 1/\(1 + 1/\(1 + 1/\(5 + 1/\(1 + 1/3\)\)\)\)) s
+( ) s
+(                        1) s
+(              = 2 + ---------) s
+(                            1) s
+(                    1 + ---------) s
+(                                1) s
+(                        1 + ---------) s
+(                                    1) s
+(                            5 + --------) s
+(                                      1) s
+(                                1 +  ---) s
+(                                      3) s
+( Similarly, if you want 100/2.54, the number of inches per meter,) s
+( you will find) s
+( ) s
+(         39 2 1 2 2 1 4) s
+( ) s
+( which is much nicer than) s
+( ) s
+(         39.\(370078740157480314960629921259842519685039\)) s
+( ) s
+( where the part in parentheses repeats forever.  \(Incidentally, this) s
+( repeating decimal is easily computed since the remainder of 2 after) s
+( the quotient digits 3937 ensures that, starting with 7874..., the) s
+( answer will be just twice the original one, ignoring the) s
+( decimal point.  Thus you just double the quotient, starting from the) s
+( left \(using one digit lookahead for carries\), placing the answer) s
+( digits on the right, so as to make the number chase its tail.  This) s
+( trick is even easier in expansions of ratios where some remainder) s
+( is exactly 1/nth of an earlier one, for small n. You forget about) s
+( the divisor and simply start shortdividing by n at the quotient) s
+( digit corresponding to the earlier remainder.  If this seems confusing,) s
+( forget it--it has nothing to do with continued fractions.\)) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 2 2
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( ) s
+( ) s
+( ) s
+( Now suppose we want the continued fraction of) s
+( ) s
+(         70 t + 29) s
+(         --------- ,) s
+(         12 t + 5) s
+( ) s
+( knowing only that t is positive.  We can only give a partial answer--) s
+( if t happened to be irrational, for instance, the true answer would) s
+( go on forever.  We do know, however, that as t varies between oo and 0,) s
+( ) s
+(         70   70 t + 29   29) s
+(         -- < --------- < --) s
+(         12   12 t + 5    5) s
+( ) s
+( so the first term, at least, is 5.  Following the same procedure) s
+( for Euclid's algorithm:) s
+( ) s
+( 70 t + 29) s
+( ) s
+( 12 t + 5        5       \( 70 t + 29 - 5 \(12 t + 5\) = 10 t + 4 \)) s
+( ) s
+( 10 t + 4        1       \(I.e. between 12/10 and 5/4\)) s
+( ) s
+(  2 t + 1        4       \(It could only be 5 if t were truly oo\)) s
+( ) s
+(  2 t) s
+( ) s
+( All we can say about our next quotient is that it lies between) s
+( 1 and oo.  But we have managed to reexpress) s
+( ) s
+(         70 t + 29              1) s
+(         ---------  as  5 + ---------) s
+(         12 t + 5                   1) s
+(                            1 + ---------) s
+(                                        1) s
+(                                4 + ---------) s
+(                                     2 t + 1) s
+(                                     -------) s
+(                                       2 t) s
+( ) s
+( and thereby determine the first three terms of the continued fraction.) s
+( ) s
+( If we knew that t > 1/2, we could get another term:) s
+( ) s
+(         2 t + 1          1) s
+(         -------  =  1 + --- .) s
+(           2 t           2 t) s
+( ) s
+( ) s
+( ) s
+( ) s
+(                     Input) s
+( ) s
+( Now, the opposite problem:  suppose you are receiving the terms) s
+( of a continued fraction 5 1 4 1 ... which may go on forever, or) s
+( possibly end with a symbolic expression.  We wish to reconstruct) s
+( the value as the terms come in, rather than awaiting an end which) s
+( may never come.) s
+( ) s
+( Let x symbolize the value of the "rest" of the continued fraction,) s
+( so that before we learn its first term, x stands for the whole) s
+( thing.  When we learn that the first term is 5,) s
+( ) s
+(                       1      5 x + 1) s
+(         x becomes 5 + -  or  ------- .) s
+(                       x         x) s
+( ) s
+( When the next term turns out to be 1,) s
+( ) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 3 3
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+(                       1       5 x + 1         6 x + 5) s
+(         x becomes 1 + -  and  ------- becomes ------- .) s
+(                       x          x             x + 1) s
+( ) s
+( Then) s
+( ) s
+(                       1       6 x + 5           29 x + 6) s
+(         x becomes 4 + -  and  -------  becomes  -------- .) s
+(                       x        x + 1            5 x + 1) s
+( ) s
+( Then) s
+( ) s
+(                       1       29 x + 6           35 x + 29) s
+(         x becomes 1 + -  and  --------  becomes  --------- .) s
+(                       x       5 x + 1             6 x + 5) s
+( ) s
+( Finally, when x becomes 2 t, we have reconstructed the original) s
+( expression.) s
+( ) s
+( In general, when) s
+( ) s
+(                  1         q x + r           \(a q + r\) x + q) s
+(    x becomes a + - , then  -------  becomes  --------------- .) s
+(                  x         s x + t           \(a s + t\) x + s) s
+( ) s
+( Although this looks messy, it can be handled almost as neatly as) s
+( Euclid's algorithm:) s
+( ) s
+( ) s
+( ) s
+( From RIGHT TO LEFT across the page, we write the incoming terms as) s
+( we learn them:) s
+( ) s
+(                 . . .   1   4   1   5) s
+( ) s
+( Under the first \(rightmost\) term, we place the left edge of the array) s
+( ) s
+(         1   0                1 x + 0) s
+(                 symbolizing  -------  i.e. the identity function:) s
+(         0   1                0 x + 1) s
+( ) s
+( ) s
+(                 . . .   1   4   1   5) s
+( ) s
+(                                     1   0) s
+( ) s
+(                                     0   1) s
+( ) s
+( Then, again from RIGHT TO LEFT, we extend the lower two rows with the) s
+( simple recurrence:  multiply each element by the term in the top row) s
+( above it, then add the element to the right and write the sum on the) s
+( left:) s
+( ) s
+(                 . . .   1   4   1   5) s
+( ) s
+(                    35  29   6   5   1   0) s
+( ) s
+(                     6   5   1   1   0   1) s
+( ) s
+( That is, 29 = 4 * 6 + 5, and in the bottom row, 6 = 1 * 5 + 1.) s
+( Letting the last term be 2t,) s
+( ) s
+(                   2t   1   4   1   5) s
+(  ) s
+(        70t + 29   35  29   6   5   1   0) s
+( ) s
+(        12t + 5     6   5   1   1   0   1) s
+( ) s
+( The great thing about this process is that you can take other) s
+( functions by initializing the rightmost matrix to other than) s
+( ) s
+(         1   0) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 4 4
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( ) s
+(         0   1 .) s
+( ) s
+( Furthermore, it is possible to intersperse steps of the Euclid) s
+( process between input steps, thereby computing the continued) s
+( fraction of the value of the function while the value) s
+( of the argument is still being learned.) s
+( ) s
+( ) s
+( ) s
+(                     Throughput) s
+( ) s
+( Suppose, for instance, that we want to compute the continued fraction) s
+( ) s
+(              2) s
+( for     -----------) s
+(         3 - sqrt\(2\)) s
+( ) s
+( knowing that the continued fraction for sqrt\(2\) is 1 2 2 2 2 2 ... .) s
+( We set up) s
+( ) s
+(         . . .   2   2   2   2   2   2   1) s
+( ) s
+(                                         0   2) s
+( ) s
+(                                        -1   3) s
+( ) s
+( symbolizing) s
+( ) s
+(         0 sqrt\(2\) + 2) s
+(         ------------- .) s
+(         - sqrt\(2\) + 3) s
+( ) s
+( Filling in two elements of each row:) s
+( ) s
+(         . . .   2   2   2   2   2   2   1) s
+( ) s
+(                                 4   2   0   2) s
+( ) s
+(                                 3   2  -1   3) s
+( ) s
+(         4   2         4 x + 2) s
+( But            means  -------  and since x, the rest of the continued) s
+(         3   2         3 x + 2) s
+( ) s
+( fraction, is between 0 and oo, we know that the answer is between) s
+( 4/3 and 2/2, so we can perform a Euclid step with the quotient 1) s
+( as the first answer term:) s
+( ) s
+(         . . .   2   2   2   2   2   2   1) s
+( ) s
+(                                 4   2   0   2) s
+( ) s
+(                                 3   2  -1   3   1) s
+( ) s
+(                                 1   0) s
+( ) s
+( \(As before, we list the output terms down the right side.\)) s
+( Now we must proceed to the left again \(unless we are willing to admit) s
+( that we know x > 2\):) s
+( ) s
+( ) s
+( ) s
+(     . . .   2   2   2   2   2   2   1) s
+( ) s
+(                                 4   2   0   2) s
+( ) s
+(                             8   3   2  -1   3   1) s
+( ) s
+(                             2   1   0) s
+( ) s
+( Any number between 8/2 and 3/1 has 3 as its integer part,) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 5 5
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( so 3 is our second term.) s
+( ) s
+(         . . .   2   2   2   2   2   2   1) s
+( ) s
+(                                 4   2   0   2) s
+( ) s
+(                             8   3   2  -1   3   1) s
+( ) s
+(                             2   1   0           3) s
+( ) s
+(                             2   0) s
+( ) s
+( Continuing:) s
+( ) s
+(         . . .   2   2   2   2   2   2   1) s
+( ) s
+(                                 4   2   0   2) s
+( ) s
+(                             8   3   2  -1   3   1) s
+( ) s
+(                         5   2   1   0           3) s
+( ) s
+(                    10   4   2   0               1) s
+( ) s
+(                 5   2   1   0                   4) s
+( ) s
+(            10   4   2   0                       1) s
+( ) s
+(             2   1   0                           4) s
+( ) s
+( But we have been in a loop since the second occurrence of the pattern) s
+( ) s
+(         2   1) s
+( ) s
+(         2   0) s
+( ) s
+( so we have found that the continued fraction for) s
+( ) s
+(              2) s
+(         -----------  is  1 3 1 4 1 4 1 4 . . .  .) s
+(         3 - sqrt\(2\)) s
+( ) s
+( ) s
+( ) s
+( ) s
+( A more interesting case:  suppose we want the continued fraction for) s
+( ) s
+(                 1     e - 1) s
+(            tanh -  =  -----) s
+(                 2     e + 1) s
+( ) s
+( and we know that e = 2.71828... = 2 1 2 1 1 4 1 1 6 1 1 8 1 ...,) s
+( which we can abbreviate 2 \(1 2k+2 1\).) s
+( ) s
+(         . . .   1   1   4   1   1   2   1   2) s
+( ) s
+(                                         1   1  -1) s
+( ) s
+(                                     4   3   1   1   0) s
+( ) s
+(                        12   7   5   2   1   1       2) s
+( ) s
+(            20  11   9   2   1   1   0   1           6) s
+( ) s
+(             2   1   1   0   1                      10) s
+( ) s
+(             0   1) s
+( ) s
+( Our suspicions aroused by the arithmetic progression developing in) s
+( the answer, and especially by the third occurrence of the pattern) s
+( ) s
+(         2   1) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 6 6
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( ) s
+(         0   1 ,) s
+( ) s
+( we introduce the symbolic term 2k+6) s
+( ) s
+( ) s
+(   . . .  1     1   2k+6   1   1   4   1   1   2   1   2) s
+( ) s
+(                                                   1   1  -1) s
+( ) s
+(                                               4   3   1   1   0) s
+( ) s
+(                                  12   7   5   2   1   1       2) s
+( ) s
+(                      20  11   9   2   1   1   0   1           6) s
+( ) s
+( 8k+28  4k+15  4k+13   2   1   1   0   1                      10) s
+( ) s
+(   2      1      1     0   1                               4k+14) s
+( ) s
+(   0      1) s
+( ) s
+( ) s
+( The reoccurrence, independent of k, of the pattern) s
+( ) s
+(         2   1               e - 1) s
+(                proves that  -----  =  0 2 6 10 \(4k+14\)  =  0 \(4k+2\) .) s
+(         0   1               e + 1) s
+( ) s
+( ) s
+( ) s
+( In fact we have proved a more general result.  We can replace 2k by) s
+( f\(k\), an arbitrary positive integer-valued function, to get the) s
+( theorem:) s
+( ) s
+(         if  x = \(f\(k\) 1 1\)) s
+( ) s
+( then) s
+( ) s
+(         2 x + 1) s
+(         -------  =  2 x + 1  =  \(2f\(k\)+2\) .) s
+(         0 x + 1) s
+( ) s
+( A handy check on the arithmetic is provided by the fact that the) s
+( determinant of each of the 2 by 2 matrices is simply negated upon each) s
+( output and input. Thus, for example, the magnitude of these determinants) s
+( in the preceding example was always 2:) s
+( ) s
+(         \(8k+12\)*1 - \(4k+7\)*2  =  -2) s
+( ) s
+(            1 * 1  - \(-1\) * 1  =  2) s
+( ) s
+( Another source of redundancy is the possibility of postponing the) s
+( output \(Euclid\) steps for a while, then performing them in a long) s
+( burst, arriving at the same point in the array via a different) s
+( route.  The disadvantage of this scheme is that larger intermediate) s
+( numbers are generated.) s
+( ) s
+( Functions of the form) s
+( ) s
+(         p x + q) s
+(         ------- ,) s
+(         r x + s) s
+( ) s
+( which we have been abbreviating with the matrix) s
+( ) s
+(         p   q) s
+( ) s
+(         r   s) s
+( ) s
+( are known as homographic functions.  If f\(x\) and g\(x\) are two) s
+( such functions, the matrix for f\(g\(x\)\) is simply the product) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 7 7
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( of the matrices for f and g.  This can be verified directly by) s
+( substitution.  This means that we can regard a continued fraction) s
+( ) s
+(                                     1) s
+(         x  =  a b c ...  =  a + ---------) s
+(                                         1) s
+(                                 b + ---------) s
+(                                             1) s
+(                                     c + ---------) s
+( ) s
+(                                             ...) s
+( ) s
+( ) s
+( ) s
+( as a composition of homographic functions:) s
+( ) s
+(          a   1   b   1   c   1) s
+(         \(     \) \(     \) \(     \)  . . .) s
+(          1   0   1   0   1   0) s
+( ) s
+( and a homographic function of such an x is merely) s
+( ) s
+(          p   q   a   1   b   1   c   1) s
+(         \(     \) \(     \) \(     \) \(     \)  . . .) s
+(          r   s   1   0   1   0   1   0) s
+( ) s
+( Carrying out these multiplications from left to right will produce) s
+( the same sequence of matrices as successively inputing the terms) s
+( a, b, c, ... in our array process.  To output a term using matrices,) s
+( multiply on the left by the inverse of the matrix for inputing that) s
+( term.  Thus, our theorem that the function 2 x + 1 will remain) s
+( unchanged by inputing the sequence f 1 1 and then outputing the term) s
+( 2f+2 can be written as the matrix identity) s
+( ) s
+(          0    1    2   1   f   1   1   1   1   1       2   1) s
+(         \(       \) \(     \) \(     \) \(     \) \(     \)  =  \(     \) .) s
+(          1 -2f-2   0   1   1   0   1   0   1   0       0   1) s
+( ) s
+( Here is why we bother with these clumsy matrices:  we know that) s
+( ) s
+(         e + 1) s
+(         -----  =  2 6 10 14 ...) s
+(         e - 1) s
+( ) s
+( since deleting \(or adding\) an initial 0 term reciprocates the) s
+( value of a continued fraction.  We wish to use this result to) s
+( get the continued fraction for 4/e.  The problem is:  what is) s
+( the initial matrix?  Answer:) s
+( ) s
+(         0   4   1   1 -1      2  -2       4  -4) s
+(        \(     \) \(     \)    =           ==) s
+(         1   0   1  -1        1/2 1/2      1   1) s
+( ) s
+( The left hand matrix says 4/x, the next one says) s
+( ) s
+(         x + 1) s
+(         ----- .) s
+(         x - 1) s
+( ) s
+( Inverting it says solve for x \(in our case e\).  \(If function) s
+( composition comes from matrix multiplication, then function) s
+( inversion must come from matrix inversion.\)   Multiplying by) s
+( the first matrix applies the "4 divided by" function.  Multiplying) s
+( all of the elements by 2 is just equivalent to multiplying the) s
+( numerator and denominator of a fraction.) s
+( ) s
+( The following computation of 4/e is much simpler if we squeeze out) s
+( additional terms from patterns like) s
+( ) s
+(         8   0) s
+( ) s
+(         3   1) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 8 8
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( ) s
+( by using the fact that x > 1, instead of the weaker condition x > 0,) s
+( so that we have) s
+( ) s
+(         8   8 x + 0   8+0              8   8 x + 0   0) s
+(         - > ------- > ---  instead of  - > ------- > - .) s
+(         3   3 x + 1   3+1              3   3 x + 1   1) s
+( ) s
+( ) s
+(   . . .   8k+26   8k+22  18  14  10   6   2) s
+( ) s
+(                                       4   4  -4) s
+(                                                         \(Determinant = +or- 8\)) s
+(                                  19   3   1   1   1) s
+( ) s
+(                              91   9   1   3       2) s
+( ) s
+(                              11   1   1           8) s
+(                              -------) s
+(                          43 | 3   1 |             3) s
+(                             |       |) s
+(                          26 | 2  -2 |             1) s
+(                              -------) s
+(                          17   1                   1) s
+( ) s
+(                           9   1                   1) s
+( ) s
+(                    144    8   0                   1) s
+( ) s
+(                     19    1   1                   7) s
+( ) s
+(                     11    1                       1) s
+( ) s
+(                      8    0                       1) s
+(                     --------) s
+(          24k+67    | 3    1 |                     2   \(Pattern recurs,) s
+(                    |        |                          prompts input of) s
+(          16k+42    | 2   -2 |    period begins    1    symbolic terms.\)) s
+(                     --------) s
+(           8k+25      1                            1) s
+( ) s
+(           8k+17      1                            1) s
+( ) s
+( 64k+208     8        0                           k+2) s
+( ) s
+(  8k+27      1        1                            7) s
+( ) s
+(  8k+19      1                                     1) s
+( ) s
+(    8        0                                    k+2) s
+(   ------------) s
+(  | 3        1 |  Pattern recurs, period ends      2) s
+(  |            |) s
+(  | 2       -2 |) s
+(   ------------) s
+( ) s
+( ) s
+( ) s
+( This gives us) s
+( ) s
+( 4) s
+( -  =  1  2  8  3  1  1  1  1  7  1  1  2 \(1 1 1 k+2 7 1 k+2 2\)) s
+( e) s
+( ) s
+(    =  1  2  8  3 \(1  1  1 k+1 7  1 k+1 2\) .) s
+( ) s
+( The reason for introducing the input term 8k+22 instead of 4k+22 is) s
+( that the matrix recurred only every other input term, thus apparently) s
+( regarding the input sequence to be \(8k+2, 8k+6\) instead of simply) s
+( \(4k+2\).  This is evidently related to the fact that this process) s
+( is characterized by a determinant of +or- 8.  A fun conjecture to) s
+( test would be the following generalization of Hurwitz's theorem:  The) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 9 9
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( homographic matrix is periodic iff the input sequence is periodic) s
+( modulo the determinant.) s
+( ) s
+(                 Inverting Homographic Functions) s
+( ) s
+( A very useful trick to add to your high school algebra repertoire:) s
+( ) s
+(               a x + b            -d y + b) s
+(         y  =  -------  ->  x  =  --------  .) s
+(               c x + d             c y - a) s
+( ) s
+( That is, to invert a homographic function, just interchange and) s
+( negate the diagonal elements of its matrix.  This is a shortcut) s
+( equivalent to inverting the matrix, then multiplying all four) s
+( elements by minus the determinant.  Of course if the determinant,) s
+( ad - bc, is 0, then we can't solve for x because y is a constant) s
+( independent of x.) s
+( ) s
+( ) s
+( ) s
+(     Addition, Multiplication, etc. of Two Continued Fractions) s
+( ) s
+(                 There is, however, another and yet more significant) s
+(                 practical demand that the apparatus of continued) s
+(                 fractions does not satisfy at all.  Knowing the) s
+(                 representations of several numbers, we would like to be) s
+(                 able, with relative ease, to find the representations) s
+(                 of the simpler functions of these numbers \(especially) s
+(                 their sum and product\).) s
+(                         ...) s
+( ) s
+(                 On the other hand, for continued fractions there are) s
+(                 no practically applicable rules for arithmetical) s
+(                 operations;  even the problem of finding the continued) s
+(                 fraction for a sum from the continued fractions) s
+(                 representing the addends is exceedingly complicated,) s
+(                 and unworkable in computational practice.) s
+( ) s
+(                         --A. YA. KHinchin, 1935) s
+( ) s
+( Until now, we have only taken functions of single continued) s
+( fractions, but to be really useful, our algorithm must extend to) s
+( arithmetic combinations of two continued fractions, x and y.  This we) s
+( do neatly by expanding to three dimensions.  We start with a 2 by 2 by) s
+( 2 matrix of eight integers.  The position of each integer in the) s
+( matrix is determined by whether or not it is a coefficient of x,) s
+( whether or not it is a coefficient of y, and whether or not it is in) s
+( the numerator.  \(The coefficients of xy are simultaneously) s
+( coefficients of x and of y.\)  If we continue the convention of) s
+( writing the terms of x from right to left across the top of) s
+( the page, and write the terms of y down the right, where we used) s
+( to put the outputs, then we can put the 2 by 2 matrix corresponding) s
+( to the numerator expression where we used to put the initial) s
+( homographic function matrix.  That is, if) s
+( ) s
+(         x  =  x1  x2  x3 ...) s
+(         y  =  y1  y2  y3 ...) s
+( ) s
+( then we represent) s
+( ) s
+(         axy + bx + cy + d) s
+( ) s
+( by) s
+( ) s
+(         . . .  x3  x2  x1) s
+( ) s
+(                         b   d) s
+( ) s
+(                         a   c   y1) s
+( ) s
+(                                 y2) s
+( ) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 10 10
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+(                                 .) s
+(                                 .) s
+(                                 .) s
+( ) s
+( ) s
+( ) s
+( ) s
+( Floating below the surface of the page, directly beneath the bdac) s
+( matrix, we can imagine the denominator matrix) s
+( ) s
+(                         f   h) s
+( ) s
+(                         e   g) s
+( ) s
+( representing) s
+( ) s
+(         exy + fx + gy + h .) s
+( ) s
+( Thus we can compute any expression of the form) s
+( ) s
+(         axy + bx + cy + d) s
+(         -----------------) s
+(         exy + fx + gy + h) s
+( ) s
+( by starting with the three dimensional matrix) s
+( ) s
+(         b   d) s
+(          f   h) s
+(         a   c) s
+(          e   g .) s
+( ) s
+( Let us call such expressions bihomographic.) s
+( ) s
+( The algorithms for continued fraction addition, subtraction,) s
+( multiplication, and division are all identical but for the) s
+( initialization of the matrix!) s
+( ) s
+(                   1   0               1   0) s
+(         x + y  =   0   1    x - y  =   0   1) s
+(                   0   1               0  -1) s
+(                    0   0               0   0) s
+( ) s
+(                   0   0               1   0) s
+(         x * y  =   0   1    x / y  =   0   0) s
+(                   1   0               0   0) s
+(                    0   0               0   1) s
+( ) s
+( We shall work through a slightly fancier example function, for no) s
+( extra cost.  Using) s
+( ) s
+(         y  =  sqrt\(6\)  =  2 2 4 2 4 2 4 . . .) s
+( ) s
+(                            2) s
+(                           e  + 1) s
+(         x  =  coth 1   =  ------  =  1 3 5 7 9 . . .) s
+(                            2) s
+(                           e  - 1) s
+( we will compute) s
+(         2xy + x           -2       sqrt\(6\)) s
+(         -------  =  \(1 + e  \) \(1 + -------\)) s
+(          xy + y                      12) s
+( ) s
+( which dictates the initial setup) s
+( ) s
+(    . . . 5   3   1   <- x) s
+(                           y) s
+(                  1   0    |) s
+(                   0   0   ) s
+( ) s
+(                  2   0    2) s
+(                   1   1) s
+(                           2) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 11 11
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( ) s
+(                           4) s
+( ) s
+( Now as x and y independently vary from 0 to oo,) s
+( ) s
+(         axy + bx + cy + d) s
+(         -----------------) s
+(         exy + fx + gy + h) s
+( ) s
+( varies between limits among the ratios  a/e,  b/f,  c/g,  and  d/h,) s
+( provided that the denominator doesn't change sign.  For the matrix) s
+( in question, two of these denominators are zero, and they must be) s
+( shifted out of the picture by inputing a term of y.) s
+( ) s
+(    . . . 5   3   1) s
+( ) s
+(                  1   0) s
+(                   0   0) s
+( ) s
+(                  2   0    2) s
+(                   1   1) s
+( ) s
+(                  5   0    2) s
+(                   2   2) s
+( ) s
+(                           4) s
+( ) s
+( ) s
+( Here the 2 by 2 matrix  2   0  was multiplied by 2 \(the first term of y\)) s
+(                          1   1) s
+( ) s
+( and added to  1   0  to get  5   0  .  Now we observe that the lefthand) s
+(                0   0          2   2) s
+( ) s
+( pair of ratios, 2/1 and 5/2, have the same integer parts, whereas the) s
+( bottom pair, 5/2 and 0/2, do not.  Since our goal is to) s
+( get them to be equal so that we can perform a Euclid output step,) s
+( we proceed to the left with an x input.  Inputing from y instead) s
+( would not get rid of the 5/2 and 0/2 for another step.) s
+(    . . . 5   3   1) s
+( ) s
+(                  1   0) s
+(                   0   0) s
+( ) s
+(              2   2   0    2) s
+(               2   1   1) s
+( ) s
+(              5   5   0    2) s
+(               4   2   2) s
+( ) s
+(                           4) s
+( ) s
+( ) s
+( Unfortunately, this input of 1 still does not provide enough information to) s
+( determine the output \(smaller terms are less informative than larger ones\).) s
+( Nevertheless, the two new ratios, 2/2 and 5/4 have equal integer parts,) s
+( so we continue leftward.) s
+( ) s
+(    . . . 5   3   1) s
+( ) s
+(                  1   0) s
+(                   0   0) s
+( ) s
+(          8   2   2   0    2) s
+(           7   2   1   1) s
+( ) s
+(         20   5   5   0    2) s
+(          14   4   2   2) s
+( ) s
+(                           4) s
+( ) s
+( ) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 12 12
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( At last we have determined that the first answer term is 1, and we) s
+( ) s
+(                                          7   2) s
+( subtract 1 times the denominator matrix         from the numerator) s
+(                                         14   4) s
+( ) s
+(         8   2                                     1   0) s
+( matrix         to get the new denominator matrix        .) s
+(        20   5                                     6   1) s
+( ) s
+(    . . . 5    3    1) s
+(                                         outputs) s
+(                    1    0) s
+(                     0    0                 1) s
+( ) s
+(          8    2    2    0     2) s
+(           7    2    1    1) s
+(            1    0) s
+( ) s
+(         20    5    5    0     2) s
+(          14    4    2    2) s
+(            6    1) s
+( ) s
+(                               4) s
+( ) s
+( ) s
+( Again a 0 denominator thwarts immediate hope of another output, but) s
+( it is in the corner where either an x or a y input will get rid of it.) s
+( In fact, since the integer parts of the other three ratios are all) s
+( different, we will need at least two more input terms to get rid of) s
+( them.  We can further deduce that we need at least one y input,) s
+( otherwise the y-independent ratios will remain between 7 and oo,) s
+( while the other pair will stay in the disjoint interval between 14/6) s
+( and 4.  So let's sample y first.) s
+( ) s
+(    . . . 5    3    1) s
+(                                         outputs) s
+(                    1    0) s
+(                     0    0                 1) s
+( ) s
+(          8    2    2    0     2) s
+(           7    2    1    1) s
+(            1    0) s
+( ) s
+(         20    5    5    0     2) s
+(          14    4    2    2) s
+(            6    1) s
+( ) s
+(          35   10              4) s
+(           13    2) s
+( ) s
+( Now 14/6 and 35/13 have equal integer parts, so we move x-ward.) s
+( ) s
+(    . . . 5    3    1) s
+(                                         outputs) s
+(                    1    0) s
+(                     0    0                 1) s
+( ) s
+(          8    2    2    0     2) s
+(           7    2    1    1) s
+(            1    0) s
+( ) s
+(         20    5    5    0     2) s
+(     74   14    4    2    2) s
+(      31    6    1) s
+( ) s
+(    185   35   10              4) s
+(      67   13    2) s
+( ) s
+( ) s
+( which nets us an output term of 2.) s
+( ) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 13 13
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( ) s
+(    . . . 5    3    1) s
+(                                         outputs) s
+(                    1    0) s
+(                     0    0                 1) s
+(                                             2) s
+(          8    2    2    0     2) s
+(           7    2    1    1) s
+(            1    0) s
+( ) s
+(         20    5    5    0     2) s
+(     74   14    4    2    2) s
+(      31    6    1) s
+(       12    2) s
+( ) s
+(    185   35   10              4) s
+(      67   13    2) s
+(       51    9) s
+( ) s
+( ) s
+( ) s
+( Now we must input the 4 from the y sequence, whereupon we will get an) s
+( output of 1, leaving us with the matrix  51   9) s
+(                                           16   4) s
+( ) s
+(                                         216  38) s
+(                                           83  20 .) s
+( ) s
+( On the next page is a perspective view of the entire process up until) s
+( now.  The extremely elongated numbers are the inputs, and the three) s
+( outputs 1 2 1 are in the upper right.  This picture was produced with) s
+( Bruce Baumgart's Geometric Editor \(Stanford AI Memo 232\).) s
+( ) s
+( Another x and y go in and a 2, a 1, and a 1 bubble out:) s
+( ) s
+( . . .  7   5    3    1) s
+(                                           outputs) s
+(                      1    0) s
+(                       0    0                 1) s
+(                                               2) s
+(            8    2    2    0     2              1) s
+(             7    2    1    1                    2) s
+(              1    0                              1) s
+(                                                   1) s
+(           20    5    5    0     2                  .) s
+(       74   14    4    2    2                        .) s
+(        31    6    1                                  .) s
+(         12    2) s
+( ) s
+(      185   35   10              4) s
+(        67   13    2) s
+(  366    51    9) s
+(   116    16    4) s
+( ) s
+(       299   58                  2) s
+( 1550   216   38) s
+(   601    83   20) s
+(    348    50                    .) s
+(     253    33) s
+(       95    17                  .) s
+( ) s
+( 3466   483                      .) s
+(  1318   182) s
+(    830   119) s
+(     488    63) s
+(      342    56) s
+( ) s
+( ) s
+( ) s
+( Unfortunately, except for a few degenerate cases, each matrix variable) s
+( will tend to grow so as to contain about a quarter as many digits as) s
+( have been input.  However, there is no need for the most difficult) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 14 14
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( multiprecision routines--namely multiply and divide--since multiplies) s
+( will nearly always involve small terms, and divides are merely integer) s
+( estimates of ratios.  The rare case of a large term can be handled by) s
+( breaking it up, e.g. 78629 = 78000 0 629 .  \(See the Zero and Negative) s
+( Terms section.\) Also on the brighter side, the rate of information) s
+( output will keep up with the inputs except for a slight lag of a term or) s
+( two due to the crude bounds \(0 to oo\) used for the unread segments.) s
+( ) s
+(                 But Why All This Trouble?) s
+( ) s
+( Why use algorithms that are at least twice as hard as the usual) s
+( algorithms on numbers in positional notation \(e.g. decimal or) s
+( binary\)?  One answer is that many numbers, such as pi and e, can be) s
+( represented exactly, using little programs \(coroutines\) to provide) s
+( indefinitely many continued fraction terms on demand. ) s
+( ) s
+( But the algorithms for sum, product, etc. of two such numbers have) s
+( this same property, for they produce their output as they read their) s
+( input.  Thus we can cascade several of these routines so as to) s
+( evaluate arithmetic expressions in such a way that output stream) s
+( begins almost immediately, and yet can continue almost indefinitely.) s
+( The user is freed from having to decide in advance just how much) s
+( precision is necessary and yet not wasteful.  Later we will extend this) s
+( claim to cover series terms and approximating iterations.) s
+( ) s
+( When you analyze why people actually bother with numerical) s
+( arithmetic instead of leaving things symbolic, you find that the) s
+( main reason is for deciding inequalities.  Imagine how much) s
+( computational effort has been wasted in generating the bits to the) s
+( right of the decisive ones in inequalities.  A fixed word length is) s
+( almost always too long, yet sometimes too short, whereas term-at-a-time) s
+( arithmetic can shut off as soon as the "comparands" differ.) s
+( ) s
+( Another great waste of effort is the generation of information which is) s
+( destroyed by truncation and rounding, or discarded in the form of) s
+( remainders from division.  By contrast, information is completely) s
+( conserved during continued fraction processes, making the arithmetic) s
+( reversible.  In fact, continued fraction arithmetic is information-driven:) s
+( processing is always directed to the subexpressions upon which the final) s
+( answer depends most.  No input is needlessly read, and no output is) s
+( needlessly delayed.  As a result, quantities which are multipled by small) s
+( coefficients or 0 will be evaluated only a little, or not at all.) s
+( ) s
+( The original arithmetic expression, whose value we seek to print out,) s
+( is expressed as a composition of homographic and bihomographic) s
+( functions.  \(At the bottom level are the constants, which act like) s
+( functions of no arguments.\)  These functions are the subexpressions) s
+( over which the computational effort is distributed.  When a function) s
+( is asked for a term, it performs the algorithm we have described in) s
+( the preceding pages, asking in turn for zero or more terms from its) s
+( subfunctions until its pending output term is insensitive to them.) s
+( If multiple processors are available, a fork can be executed whenever) s
+( a function finds itself dependent on more than one subfunction. ) s
+( ) s
+( ) s
+( ) s
+( \(Problem:  how do you write an arbitrary arithmetic expression as) s
+( a minimal number of homographic and bihomographic functions?\)) s
+( ) s
+( Contrary to convention, processing begins at the output routine.) s
+( The output routine asks the top level function for a datum) s
+( \(term or digit\) and the top level function inturn asks for) s
+( data from the input to which it is most sensitive.  Eventually,) s
+( a bottom level number routine will be reached, whereupon) s
+( information begins to percolate upward.) s
+( ) s
+( But most computations involve imprecise quantites, so why bother) s
+( with errorless arithmetic?  Because the built-in error analysis is) s
+( guaranteed to stop output before erroneous terms, simultaneously) s
+( indicating the quantity which limited the significance.  The trick is) s
+( to implement imprecise quantities as bottom level functions of no) s
+( arguments analogous to those for pi and e, but instead of containing) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 15 15
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( and endless description, these programs emit a loud croak when asked) s
+( for one more term than they have. ) s
+( ) s
+( A drawback of this scheme is that continued fraction terms are) s
+( inadequately small units of information, so that imprecise quantities) s
+( will usually have a fraction of a term left over, that is, a term) s
+( whose exact value is uncertain, but bounded more narrowly than) s
+( between 1 and oo.  Furthermore, most of the subexpression modules) s
+( will also contain partial terms when a computation stalls.  The best) s
+( solution to this problem is to use continued logarithms \(later) s
+( section\) instead of continued fractions, but we have a tolerable) s
+( solution which uses the reversiblity of continued fraction) s
+( computations.  The idea is for each imprecise quantity to describe) s
+( its upper bound, then take back a term or so and proceed to describe) s
+( its lower bound.  For example the gas constant) s
+( ) s
+(         PV) s
+(         --  =  R  =  8.31432 +or- .00034  Joules/deg/mole) s
+(         nT) s
+( ) s
+( could be converted to two continued fractions--one for the lower) s
+( limit of 8.31398, and one for the upper limit of 8.31466, but we) s
+( can effectively get both by running Euclid's algorithm on the lower) s
+( limit while keeping track of the error interval:) s
+( ) s
+(         8.31398 + .00068) s
+(         1.00000      0     8) s
+(          .31398 + .00068   3) s
+(          .05806 - .00184   5) s
+(          .02368 + .00988   2) s
+(          .01070 - .02160   2) s
+(          .00328 + .05308) s
+( ) s
+( In the fifth row a negative error has greater magnitude than the) s
+( corresponding remainder, indicating that we would be outputing) s
+( different terms by then if we were doing the upper limit instead.  But) s
+( we can switch over to doing the upper limit simply by adding the last) s
+( two errors to their corresponding remainders and then continuing:) s
+(          .01070 - .02160 = -.01090) s
+(          .00328 + .05308 =  .05636   0) s
+(                            -.01090  -6) s
+(                            -.00904) s
+( ) s
+( Note the 0 term, charateristic of retraction.) s
+( ) s
+( This tells us that the true value is between) s
+( ) s
+(         8 3 5 2 3) s
+( ) s
+( and     8 3 5 2 2 0 -6  =  8 3 5 2 -4  =  8 3 5 1 1 3) s
+( ) s
+(     =   8 3 5 2 3 0 -7) s
+( ) s
+( This means that we can describe our imprecise number as) s
+( ) s
+(         8 3 5 2 3 oo 0 -oo -7 oo) s
+( ) s
+( where oo means a very large term or, equivalently, a termination) s
+( signal.  The desired effect, anyway, is to squeeze out the partial) s
+( terms from the immediate superior function by making it think it has) s
+( gotten a lot of information.  Probably the best thing for f\(x,y\) to) s
+( do when it receives its first oo from an imprecise x is to set aside) s
+( copies of its coefficients of x, freeze y input \(in case y might) s
+( deliver a confusing oo\), read the rest of x \(to the last oo\), then) s
+( replace all of the noncoefficients of x with the copies of the) s
+( corresponding coefficients of x that had been set aside.) s
+( Unfortunately, when a function depends on two imprecise arguments,) s
+( it must go through extra pain to select the extremes from the four) s
+( values it achieves as each argument saturates at each limit. ) s
+( ) s
+(     Square Roots of Continued Fractions) s
+( ) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 16 16
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( To find y = sqrt\(x\), rewrite the equation as) s
+( ) s
+(         y  =  x/y .) s
+( ) s
+( Our plan is to extract a term at a time from the continued fraction) s
+( process for x/y subject to the condition that the output terms) s
+( of the process must equal the input terms of y.) s
+( ) s
+( We will be concerned with matrices whose last element is minus their) s
+( first.  This property is preserved if we always input what we output:) s
+( ) s
+(                    x) s
+( ) s
+(           ax+b     a   b) s
+( ) s
+(           cx-a     c  -a    x) s
+( ) s
+(               2) s
+(       b+2ax-cx   a-cx) s
+( ) s
+( Another important property of these matrices:  if) s
+( ) s
+(                  a y + b) s
+(         f\(y\)  =  -------) s
+(                  c y - a) s
+( ) s
+( and we wish to find the "fixed point" of f, i.e. solve the equation) s
+( ) s
+(         y  =  f\(y\) ,) s
+( ) s
+( then the simple iteration) s
+( ) s
+(         y  <-  average \(y, f\(y\)\)) s
+( ) s
+( will be equivalent to the rapidly convergent Newton's iteration) s
+( for the equivalent equation) s
+( ) s
+(            2) s
+(         c y  - 2 a y - b  =  0 .) s
+( ) s
+( These particular homographic functions are the self-inverse ones,) s
+( that is, f\(f\(y\)\) = y for all y.) s
+( ) s
+( For a warmup exercise, we will assume x to be merely a rational, 17/10,) s
+( instead of a continued fraction.  We set up the matrix for) s
+( ) s
+(                  17) s
+(          f\(y\) = ----) s
+(                 10 y) s
+( ) s
+( namely) s
+( ) s
+(                                         0   17) s
+( ) s
+(                                        10    0 .) s
+( ) s
+( Since the output must equal the input, the next term of y must always) s
+( be the integer part of the fixed point of the \(homographic\) function) s
+( defined by the matrix.  To find this we can run a miniature) s
+( successive approximation for each term.  For example, the arbitrary) s
+( guess that y = 3 gives f\(y\) = 17/30 , whose integer part is 0.  The) s
+( average of y and f\(y\), whose integer part is 1, will be much closer,) s
+( being equivalent to a step of Newton's method.  Now f\(1\) = 17/10, and) s
+( since the actual value always lies between y and f\(y\), 1 must be the) s
+( integer part of sqrt\(17/10\) and hence the first input and output) s
+( term.  Outputing and inputing a 1:) s
+( ) s
+(                                         1) s
+( ) s
+(                                         0   17) s
+( ) s
+(                                   10   10    0    1) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 17 17
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( ) s
+(                                    7  -10   17) s
+( ) s
+( The next term will be the integer part of the solution of) s
+( ) s
+(               10 y + 10) s
+(         y  =  --------- .) s
+(                7 y - 10) s
+( ) s
+( We could start by guessing y = 2.  Note that since we desire positive) s
+( terms, we must choose x > 10/7 to avoid the negative root.  [f\(2\)] = 4,) s
+( so we try the average, 3.  [f\(3\)] = 3, so we output and input 3:) s
+( ) s
+(                                    3    1) s
+( ) s
+(                                         0   17) s
+( ) s
+(                                   10   10    0    1) s
+( ) s
+(                              11    7  -10   17    3) s
+( ) s
+(                               7  -11   40) s
+( ) s
+( Here we find f\(3\) = 4, which is no problem, since the actual fixed) s
+( point is in between and thus must start with 3.) s
+( ) s
+(                               3    3    1) s
+( ) s
+(                                         0   17) s
+( ) s
+(                                   10   10    0    1) s
+( ) s
+(                              11    7  -10   17    3) s
+( ) s
+(                         10    7  -11   40         3) s
+( ) s
+(                         10  -10   40) s
+( ) s
+( ) s
+( ) s
+( Then [f\(2\)] = 2,) s
+( ) s
+(                          2    3    3    1) s
+( ) s
+(                                         0   17) s
+( ) s
+(                                   10   10    0    1) s
+( ) s
+(                              11    7  -10   17    3) s
+( ) s
+(                         10    7  -11   40         3) s
+( ) s
+(                    10   10  -10   40              2) s
+( ) s
+(                     7  -10   27) s
+( ) s
+( But we had this same matrix after the first term, so) s
+( ) s
+(         sqrt\(17/10\)  =  1 \(3 3 2\) .) s
+( ) s
+( \(Actually, in this special case where the radicand is rational, it) s
+( is possible to eliminate the guesswork from each iteration by observing) s
+( that the determinant is preserved.  In general, when) s
+( ) s
+(               a y + b) s
+(         y  =  -------) s
+(               c y - a) s
+(         ) s
+( we have the determinant) s
+( ) s
+(                  2) s
+(         D  =  - a  - b c) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 18 18
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( ) s
+( and) s
+( ) s
+(               a + sqrt\(-D\)) s
+(         y  =  ------------) s
+(                    c) s
+( ) s
+( so [y] is merely [\(a+d\)/c], where d = [sqrt\(-D\)], which we need only) s
+( compute once at the beginning.  The algorithm is then a close equivalent) s
+( to the one in Knuth, exercise 4.5.3.12.  Unfortunately, when the radicand) s
+( is a continued fraction to begin with, there is no such convenient) s
+( invariant, so we will need a small iteration for each term.\)) s
+( ) s
+(             The Real Thing) s
+( ) s
+( Actually, we can solve any quadratic equation by rewriting it) s
+( as the fixed point of a self-inverse homographic function:) s
+( ) s
+(            2                             - q x - 2 r) s
+(         p x  + q x + r  =  0   ->  x  =  ----------- .) s
+(                                          2 p x  + q) s
+( ) s
+( So instead of simply taking the square root of a continued fraction,) s
+( it will be more illustrative to solve a quadratic equation, one of) s
+( whose coefficients is a continued fraction.  We will compute coth 1/2) s
+( from) s
+( ) s
+(         coth 1  =  1 3 5 ...  =  \(2k+1\)) s
+( ) s
+( using) s
+(                 2) s
+(         \(coth t\)  + 1) s
+(         -------------  =  coth 2t) s
+(           2 coth t) s
+( ) s
+( with t = 1/2.) s
+( ) s
+( The equation we want is) s
+( ) s
+(               x y - 1) s
+(         y  =  -------) s
+(                y - x) s
+( ) s
+( where x = coth 1  and y = coth 1/2 , giving us the initial setup) s
+( ) s
+(    . . .  7    5    3    1) s
+( ) s
+(                          0   -1) s
+(                          -1    0) s
+( ) s
+(                          1    0) s
+(                           0    1) s
+( ) s
+( Corresponding to x = oo and x = 0 are the left and righthand 2 by 2) s
+( matrices, which, as functions of y, also have the useful property) s
+( of being self-inverse.  This means that we can use the Newton averaging) s
+( trick to quickly find the integer part of the fixed point of the left) s
+( matrix, and if it satisfies the righthand one, it is the term to) s
+( output in the answer and input as y.  If the two matrices have) s
+( different fixed points, more x input is needed.  This sounds harder) s
+( than it is.) s
+( ) s
+( Initially, the lefthand \(x = oo\) equation says) s
+( ) s
+(         y = - y .) s
+( ) s
+( Guessing y = 69 will give us a value of -69, which, averaged with) s
+( 69 gives our second approximation, 0, which is exactly right, since) s
+( the equation happened to be degenerately linear.  The righthand) s
+( equation is) s
+( ) s
+(         y  =  - 1/y ,) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 19 19
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( ) s
+( which is decidedly not solved by y = 0, so, hardly to our surprise,) s
+( we must read in a term or more of x before we can begin to output) s
+( some algebraic function of it.) s
+( ) s
+(    . . .  7    5    3    1) s
+( ) s
+(                    -1    0   -1) s
+(                     -1   -1    0) s
+( ) s
+(                     1    1    0) s
+(                      1    0    1) s
+( ) s
+( The new lefthand function is truly pathological, being identically) s
+( 1 except at 1, where it is 0/0.  Assuming that we make our algorithm) s
+( perform more input upon division by 0, two more inputs will occur.) s
+( ) s
+(    . . .  7    5    3    1) s
+( ) s
+(         -16   -3   -1    0   -1) s
+(          -21   -4   -1   -1    0) s
+( ) s
+(          21    4    1    1    0) s
+(           16    3    1    0    1) s
+( ) s
+( Finally, both of the last two matrices have fixed points solidly) s
+( between 2 and 3, so we output a 2 in the z direction and input a) s
+( 2 in the y direction.) s
+( ) s
+(    . . .  7    5    3    1) s
+( ) s
+(         -16   -3   -1    0   -1) s
+(          -21   -4   -1   -1    0) s
+(            26    5) s
+( ) s
+(          21    4    1    1    0     2) s
+(           16    3    1    0    1) s
+(           -11   -2) s
+( ) s
+(           11    2) s
+(             4    1) s
+( ) s
+( Now the lefthand matrix has fixed point between 6 and 7, while 6) s
+( plugged into the righthand one gives 15/4.  More input.) s
+( ) s
+(    . . .  7    5    3    1) s
+( ) s
+(         -16   -3   -1    0   -1) s
+(          -21   -4   -1   -1    0) s
+(            26    5) s
+( ) s
+(          21    4    1    1    0     2) s
+(     115   16    3    1    0    1) s
+(      -79  -11   -2) s
+( ) s
+(      79   11    2) s
+(       29    4    1) s
+( ) s
+( Trying our 6 in the new lefthand matrix, we win.) s
+( ) s
+(    . . .  7    5    3    1) s
+( ) s
+(         -16   -3   -1    0   -1) s
+(          -21   -4   -1   -1    0) s
+(            26    5) s
+( ) s
+(          21    4    1    1    0     2) s
+(     115   16    3    1    0    1) s
+(      -79  -11   -2) s
+(       589   82) s
+( ) s
+(      79   11    2                   6) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 20 20
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+(       29    4    1) s
+(       -95  -13) s
+( ) s
+(       95   13) s
+(        19    4) s
+( ) s
+( Now the lefthand matrix says 10, but not the right.  Inputing 9 from) s
+( x confirms the 10 for y.) s
+( ) s
+(       . . .   9   7    5    3    1) s
+( ) s
+(                 -16   -3   -1    0   -1) s
+(                  -21   -4   -1   -1    0) s
+(                    26    5) s
+( ) s
+(                  21    4    1    1    0     2) s
+(             115   16    3    1    0    1) s
+(              -79  -11   -2) s
+(               589   82) s
+( ) s
+(              79   11    2                   6) s
+(         265   29    4    1) s
+(         -868  -95  -13) s
+(          8945  979) s
+( ) s
+(         868   95   13                      10) s
+(          175   19    4) s
+(          -882  -95) s
+( ) s
+(          882   95) s
+(           125   29) s
+( ) s
+( It is not obvious how to show the the answer will indeed be) s
+( 2 6 10 14 ...  = \(4k+2\).) s
+( ) s
+( For a while, this computation will be typical in that the output rate) s
+( will about match the input rate, while the matrix integers slowly) s
+( grow, but in this peculiar case, the output terms outgrow the input) s
+( terms, so that input must occur somewhat oftener to make up the) s
+( information rate. ) s
+( ) s
+( Come to think of it, the schoolboy algorithm for square root is also) s
+( digit-at-a-time, but requires two inputs for each output to avoid) s
+( souring future outputs. ) s
+( ) s
+(     Square Roots etc. Using Feedback) s
+( ) s
+( Suppose that continued fraction arithmetic is being used in a) s
+( successive approximations process, and suppose further that this) s
+( process is converging at better than one term per iteration.) s
+( \(Newton's method, for example, delivers exponentially more terms each) s
+( iteration.\)  This means that the next approximation will contain at) s
+( least one more correct term than the current one, independent of the) s
+( erroneous terms which follow.  But a continued fraction process will) s
+( not request data of which it is independent, and thus it will have) s
+( already computed the new, correct term by the time it reads the) s
+( corresponding incorrect term.  But then there is no need at all to) s
+( read the incorrect term, since the correct one is already available.) s
+( So once a process starts to converge, it can gobble its own output in) s
+( a feedback loop. \(This idea is due to Rich Schroeppel.\)  There is a) s
+( minor catch in all of this: in order to be able to output early, the) s
+( module which computes the approximating expression must "realize" that) s
+( all instances of the input approximation must vary from 0 to oo in) s
+( unison.  Thus all instances of the approximation variable must be) s
+( grouped into a single expression which may be more complicated than) s
+( the ones for simple arithmetic.  Generalization of the algorithm to) s
+( higher dimensions, in order to accomodate additional variables or) s
+( higher powers, is straightforward but tedious.  Someday, I would like) s
+( to spend some time contemplating the consequences of more complicated) s
+( feedback arrangements.) s
+( ) s
+(                         Worked Example) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 21 21
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( ) s
+( To compute x = sqrt\(y\), Newton's method says) s
+( ) s
+(                 2) s
+(                x  + y) s
+(         x  <-  ------) s
+(                 2 x) s
+( ) s
+( where x is the approximating variable.  Unfortunately, if both) s
+( x and y are continued fractions, the general form of the expression) s
+( required will be) s
+( ) s
+(           2                 2) s
+(         ax y + bxy + cy + dx  + ex + f) s
+(         ------------------------------) s
+(           2                 2) s
+(         gx y + hxy + iy + jx  + kx + l) s
+( ) s
+( which involves twelve integer variables and four dimensions.) s
+( The feedback technique is more easily demonstrated if y is) s
+( simply an integer, like 6 for instance.) s
+( ) s
+( Then we can use the mechanism for simple arithmetic, starting with) s
+( the matrix) s
+( ) s
+(                         0    6) s
+(                          1    0) s
+( ) s
+(                         1    0) s
+(                          0    1) s
+( ) s
+(         x y + 6) s
+( i.e.    ------- , which, when y = x, is Newton's method for) s
+(          x + y) s
+( ) s
+( x = sqrt\(6\).  In the denominator, the choice of x + y) s
+( instead of 2x + 0y, for instance, will provide convenient symmetry) s
+( which will be preserved by the fact that both inputs \(and the output\)) s
+( will always be equal.) s
+( ) s
+( The four ratios amount to two 0s and two oos, indicating that we will) s
+( have to warm up the process before it produces terms automatically.) s
+( To get a term, we must estimate the integer part of the answer, which) s
+( we do simply by successive substitution using integer arithmetic.) s
+( Starting with a guess of 3, for instance:) s
+( ) s
+(         3*3 + 6           2*2 + 6) s
+(         -------  =  2+ ,  -------  =  2+) s
+(          3 + 3             2 + 2) s
+( ) s
+( so 2 is the first term, which we output and input for both x and y:) s
+( ) s
+(                 . . .   2) s
+( ) s
+(                         0    6) s
+(                     2    1    0) s
+(                      2   -2    6) s
+( ) s
+(                         1    0      2) s
+(                     1    0    1) s
+(                      0    1   -2) s
+(                                     .) s
+(                     4    1          .) s
+(                      2    0         .) s
+( ) s
+( \(We could have done this in any of the six possible orders.\)  Again) s
+( the ratios disagree, so we must take another guess and resubstitute it) s
+( until it stabilizes.  Among the four ratios, 0/1 is the limit when) s
+( both inputs approach 0 \(unrealisitic, they are greater than 1\), the) s
+( two 1/0s are the limits when one input approaches 0 while the other) s
+( approaches oo \(absurd, they are equal\), and the 4/2 is the limit when) s
+( they both approach oo.  Since the curve is asymptotically flat, this) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 22 22
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( last, lower left ratio, when finite, is the best first guess:) s
+( ) s
+(            2) s
+(         4*2  + \(1+1\)*2 + 0) s
+(         ------------------  =  2+) s
+(            2) s
+(         2*2  + \(0+0\)*2 + 1) s
+( ) s
+( So 2 it is.  Again, outputing, inputing, and inputing:) s
+( ) s
+(            . . .    2   2) s
+( ) s
+(                         0    6) s
+(                     2    1    0) s
+(                      2   -2    6) s
+( ) s
+(                         1    0      2) s
+(                     1    0    1) s
+(                 1    0    1   -2) s
+(                  0    1   -2) s
+( ) s
+(                     4    1          2) s
+(                 4    2    0) s
+(                  1    0    1) s
+( ) s
+(                 9    4) s
+(                  2    1) s
+( ) s
+( This time, 9/2 suggests 4, which is confirmed by 178/40 = 4+ , so) s
+( ) s
+(         . . .   4   2   2) s
+( ) s
+(                         0    6) s
+(                     2    1    0) s
+(                      2   -2    6) s
+( ) s
+(                         1    0      2) s
+(                     1    0    1) s
+(                 1    0    1   -2) s
+(                  0    1   -2) s
+( ) s
+(                     4    1          2) s
+(                 4    2    0) s
+(             4    1    0    1) s
+(              2    0    2) s
+( ) s
+(                 9    4              4) s
+(             9    2    1) s
+(              4    1    0) s
+( ) s
+(            40    9) s
+(             18    4) s
+( ) s
+( Now we are cooking, since the three ratios, 40/18, 9/4, and 2/1, all) s
+( say that the next term is 2, and since everything is positive, the) s
+( true value must be between the greatest and least ratio.  Pumping) s
+( through this 2, 2 4 2 2) s
+( ) s
+(                         0    6) s
+(                     2    1    0) s
+(                      2   -2    6) s
+( ) s
+(                         1    0      2) s
+(                     1    0    1) s
+(                 1    0    1   -2) s
+(                  0    1   -2) s
+( ) s
+(                     4    1          2) s
+(                 4    2    0) s
+(             4    1    0    1) s
+(              2    0    2) s
+( ) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 23 23
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+(                 9    4              4) s
+(             9    2    1) s
+(         9    4    1    0) s
+(          2    1    0) s
+( ) s
+(            40    9                  2) s
+(        40   18    4) s
+(          9    4    1) s
+(                                     .) s
+(        89   40                      .) s
+(         20    9                     .) s
+( ) s
+( We are now to the point of producing outputs twice as fast) s
+( as they are needed for input, so our matrix is getting overfed.) s
+( Let's drain it out without inputing to see what's left.) s
+( ) s
+(         40   18) s
+(           9    4) s
+(            4    2) s
+(             1    0) s
+(         ) s
+(         89   40) s
+(          20    9) s
+(            9    4) s
+(             2    1) s
+( ) s
+( outputing a 4 and a 2.  But we had this matrix) s
+( ) s
+(         4    2) s
+(          1    0) s
+( ) s
+(         9    4) s
+(          2    1) s
+( ) s
+( before, right after processing the second term.  Since the matrix) s
+( alone determines its future inputs, a repetition immediately) s
+( implies a loop, proving) s
+( ) s
+(         sqrt\(6\)  =  2 2 \(4 2 4 2\)  =  2 \(2 4\) .) s
+( ) s
+(             Non-regular Continued Fractions) s
+( ) s
+( From the \(non-regular\) continued fraction for arctan 1,) s
+( ) s
+(        4              1) s
+(        --  =  1 + ---------) s
+(        pi                 4) s
+(                   3 + ---------) s
+(                               9) s
+(                       5 + ---------) s
+(                                   16) s
+(                           7 + ---------) s
+(                                         .) s
+(                                           .) s
+(                                             .) s
+( ) s
+( we can compute the regular continued fraction for pi:) s
+( ) s
+(     . . .         100    81    64   49   36   25   16   9   4   1  \(1\)) s
+(              21    19    17    15   13   11    9    7   5   3   1) s
+( ) s
+(                                                        12   4   0   4) s
+( ) s
+(                                                    24   4   1   1   0   3) s
+( ) s
+(                                                     4   0   1) s
+(                                                    -------) s
+(                                         555   51    6   1) s
+( ) s
+(                             16416 1044   79    7    1   0               7) s
+( ) s
+(                              1008   72    2    2) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 24 24
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+(                              ----------) s
+( 98692840 3891940 169621 8261  456   29) s
+( ) s
+(  6169520  243320  10598  518   28    2) s
+(  ---------------) s
+(  4934642  194597) s
+( ) s
+(   308476   12166                                                      15) s
+( ) s
+(   307502   12107                                                       1) s
+( ) s
+(      974      59) s
+( ) s
+( The differences between this algorithm and the one for regular) s
+( continued fractions \(all 1s in the numerators\):) s
+( ) s
+(         1.  The list of numerators is written down just above) s
+(             the denominator terms.) s
+(         2.  Each element is computed from the two to its right) s
+(             by multiplying the nearer one by the denominator term) s
+(             above it, in the next to top line--then multiplying the) s
+(             further \(rightmost\) element by the numerator term above) s
+(             it \(in the top line\)--then finally adding the two) s
+(             products.  \(When the numerators are all 1, this ) s
+(             is the same as the regular algorithm.\)) s
+(             Thus, in the pi conversion, 555 = 9*51 + 16*6.) s
+(         3.  The determinant is not preserved, and it is possible) s
+(             for a 2 by 2 pattern to have a gcd of) s
+(             all four elements greater than 1.  This gcd will always) s
+(             divide the last numerator used.  In the pi conversion,) s
+(             this gcd exceeded 1 three times, successively reaching) s
+(             4, 36, and 20.  In an effort to keep the elements small,) s
+(             these gcds were divided out each time.  The reducible) s
+(             matrices were underlined and the reduced ones were then) s
+(             copied directly beneath.) s
+(         4.  You soon need scratch paper or a calculator.) s
+( ) s
+( The output steps are the same as for Euclid's algorithm.) s
+( ) s
+( The regular continued fraction for pi is particularly hard to get out) s
+( of any process, due to the difficulty in deciding whether the third) s
+( term is going to be 15 or 16.  \(The value of pi with its first two) s
+( terms gone is 15.997... .\)  These problems are due to the particularly) s
+( large term which will follow the 1--we can already tell it will be) s
+( around 300 from looking at the last matrix.  This is also what makes) s
+( ) s
+(                                 355) s
+(         3 7 15 1  =  3 7 16  =  ---  =  3.1415929...) s
+(                                 113) s
+( ) s
+( such a good approximation to pi.) s
+( ) s
+( A partial remedy to this "constipation" problem is simply to guess) s
+( what a pending output term will be, relying on the process to correct) s
+( itself later.  The corrections, if necessary, will take the form of) s
+( negative terms and possibly 0.  These can be "cleaned up" by running) s
+( the regular Euclidean process starting with the identity function.  In) s
+( the case of the pi conversion, the pattern) s
+( ) s
+(         8261  456) s
+( ) s
+(          518   28) s
+( ) s
+( tells us that the next term is between 15.9 and 16.3 so we could) s
+( \(incorrectly\) guess that the next term was 16:) s
+( ) s
+(     . . .         100    81    64   49   36   25   16   9   4   1  \(1\)) s
+(              21    19    17    15   13   11    9    7   5   3   1) s
+( ) s
+(                                                        12   4   0   4) s
+( ) s
+(                                                    24   4   1   1   0   3) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 25 25
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( ) s
+(                                                     4   0   1) s
+(                                                    -------) s
+(                                         555   51    6   1) s
+( ) s
+(                             16416 1044   79    7    1   0               7) s
+( ) s
+(                              1008   72    2    2) s
+(                              ----------) s
+(                         8261  456   29) s
+( ) s
+(  6169520  243320  10598  518   28    2                                16) s
+( ) s
+(    -1948   -1180     53  -27    8) s
+(   --------------) s
+(   308476   12166) s
+( ) s
+(     -974     -59) s
+( ) s
+( Although this gets us an earlier output, the next three input terms) s
+( still fail to get us that big term near 300--not until the ingestion) s
+( of the pair) s
+(                 196) s
+(            29) s
+(                 do we get our desired -294.  After that, five more) s
+( inputs yield the three small outputs 3, -4, 5.  \(Small terms contain) s
+( less information and therefore come out quicker.\)  This data is based) s
+( on the assumption of an output whenever the nearest integers to both) s
+( the upper and lower limits are equal.) s
+( ) s
+(             Zero and Negative Terms) s
+( ) s
+( Converting the preceding result to all-positive form, we use the identity) s
+( function:) s
+( ) s
+(     . . .   5     -4    3  -294  16   7   3) s
+( ) s
+(                                  22   3   1   0) s
+( ) s
+(                             113   7   1   0   1   3) s
+( ) s
+(               -14093  -4703  16   1   0           7) s
+( ) s
+(                 -881   -294   1   0              15) s
+( ) s
+(                 -878   -293                       1) s
+( ) s
+(                   -3     -1                     292) s
+( ) s
+(        33   7     -2     -1                       1) s
+( ) s
+(        19   4     -1      0                       1) s
+( ) s
+(        14   3                                     1) s
+( ) s
+(         5   1                                     2) s
+( ) s
+(         4   1                                     1) s
+( ) s
+(         1   0) s
+( ) s
+( which is correct as far as it goes.  The careful reader may wonder) s
+( at the seemingly premature input of the term 5 to the matrix) s
+( ) s
+(         7   -2     7 y - 2) s
+(                 =  -------) s
+(         4   -1     4 y - 1) s
+( ) s
+( which seems to say "between 7/4 and 2", thus foreordaining an output) s
+( of 1.  Beware denominator elements of opposite sign!  y between 0) s
+( and oo actually says "OUTSIDE 7/4 and 2", with a singularity at) s
+( y = 1/4.  y must be outside 0 and 1/3 to assure an output of 1) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 26 26
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( \(as was the case\).) s
+( ) s
+( This raises the question of just what are reasonable assumptions) s
+( about the range of y when we are dealing with an admittedly messed up) s
+( continued fraction.  The answer is that there are none, at least) s
+( without some very special preprocessing of the input sequence.  ) s
+( ) s
+( The problem is mainly with 0.  The sequence  ... a 0 b ...) s
+( is equivalent to the single term  ... a+b ..., since if) s
+( p and q were any adjacent elements of an input process,) s
+( ) s
+(  . . .   a+b  . . .              . . .  b    0   a   . . .) s
+(                        ==) s
+( \(a+b\)p+q  p   q               \(a+b\)p+q  p  ap+q  p   q) s
+( ) s
+( i.e. the last two adjacent elements are in the same state either way.) s
+( ) s
+( ) s
+( ) s
+( This seemingly innocent fact explains why the addition of an initial) s
+( 0 term is equivalent to the deletion \(when possible\) of one:) s
+( ) s
+(   0 0 x . . .   =  0+x . . .  =  x . . .) s
+( ) s
+( It also partly explains the funny preambles on certain "linear) s
+( Hurwitz" numbers:) s
+( ) s
+(         e  =  2 \(1 2k+2 1\)  =  1 0 1 \(1 2k+2 1\)  =  \(1 2k 1\)) s
+( ) s
+(         4) s
+(         -  =  1 2 8 3 \(1 1 1 k+1 7 1 k+1 2\)) s
+(         e) s
+( ) s
+(            =  1 2 1 0 7 1 0 2 \(1 1 1 k+1 7 1 k+1 2\)) s
+( ) s
+(            =  1 2 \(1 k 7 1 k 2 1 1\) .) s
+( ) s
+(       17) s
+(  sqrt\(--\)  =  1 \(3 3 2\)  =  \(1 3 3 1 0\)) s
+(       10) s
+( ) s
+( \(Hurwitz numbers are those which can be written in this parenthesis) s
+( notation using polynomials in k.  Hurwitz's theorem states that this) s
+( property is preserved by homographic functions with rational) s
+( coefficients.  Square roots of rationals are all of the form) s
+( ) s
+(         a \(b c ... c b 2a\)  =  \(a b c ... c b a 0\) .) s
+( ) s
+( More on this later.\)) s
+( ) s
+( The mischief comes with sequences like) s
+( ) s
+(   . . . 1 2 3 4 5 0 -5 -4 -3 -2 -1 . . .   =   . . . 0 . . .) s
+( ) s
+( wherein it seems to be saying something and then takes it all back.) s
+( This allows a peculiar but complete reversibility of continued) s
+( fraction computations--by merely inputing or outputing 0 and then) s
+( several negated terms in reverse order, the computation can back) s
+( up to any previous state, but unless the maximum length of these) s
+( "retraction palindromes" can be bounded in advance, there is) s
+( no reliable way to collapse them out with a sequential process.) s
+( Even further confusion can be introduced with several applications) s
+( of the rule:) s
+( ) s
+(         -a -b -c -d ...  =  -a-1 1 b-1 c d ...) s
+( ) s
+( In practical situations, however, you really can avoid these) s
+( problems, and the only other nonsense sequence to watch out for is) s
+( ) s
+(         . . . -1  1 -1  1 -1  1  . . .) s
+( ) s
+( But these can be detected when they begin, whereupon you can shut) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 27 27
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( of output until they stop.  You can also simply discard three pairs) s
+( at a time, since the only effect is to negate the whole state matrix:) s
+( ) s
+(         . . .   1   -1   1  -1   1   -1  . . .) s
+( ) s
+(            -p  -q  q-p  -p   q  q-p   p  q   .) s
+( ) s
+( ) s
+( ) s
+(     Increasing the Convergence Rate of Continued Fractions) s
+( ) s
+( ) s
+( ) s
+(     Reexpressing Series as Continued Fractions) s
+( ) s
+( R notation) s
+( ) s
+( ) s
+( ) s
+(             Conversion to Decimal) s
+( ) s
+(                      . . .    1  15   7   3) s
+( ) s
+(                                  22   3   1   0) s
+( ) s
+(                                   7   1   0   1   3) s
+(                                  ******) s
+(                             150  10   0) s
+( ) s
+(                             106   7   1           1) s
+(                             *******) s
+(                             440  30) s
+( ) s
+(                             106   7               4) s
+(                             *******) s
+(                        180  160  20) s
+( ) s
+(                        113  106   7               1) s
+(                        ********) s
+(                        670  540) s
+( ) s
+(                        113  106) s
+( ) s
+( That is, just follow the recipe for the homographic function of one) s
+( argument, except on output, you multiply by 10 after the subtraction,) s
+( instead of reciprocating.  On paper, this necessitates recopying the) s
+( denominators, which resembles the outputing of 0.  Thus, a decimal) s
+( fraction can be thought of as a continued fraction with two terms for) s
+( every digit.  The denominators are the decimal digits alternated with) s
+( 0s, while the numerators are alternately 1 and 10.  On output, the gcd) s
+( of the matrix can be multiplied by a divisor of 10.  This can be) s
+( detected simply by maintaining modulo 10 versions of the two) s
+( denominator coefficients.  In the special case that the input) s
+( continued fraction is regular \(as above\), only a finite number of such) s
+( reductions can occur, corresponding to the total number of factors of) s
+( 2 and 5 that the initial denominator coefficients shared in common.) s
+( Thus, although there is little reduction to be gained in the regular) s
+( case, there is also little effort-- you need only count the 2s and 5s) s
+( in the gcd of the initial denominator terms, and cancel out at most) s
+( one of each with each output multiplier of 10.) s
+( ) s
+( A curiosity worth noting is that when this decimal \(or especially) s
+( octal\) conversion is performed on the nonregular fraction for arctan 1) s
+( \(as in the section on nonregular fractions\), the number of reductions) s
+( by 2 depends drastically upon the original denominator coefficients.) s
+( If they are 0 and 1, for instance, there will be four times as many) s
+( cancellable powers of 2 than if they are 1 and 0.  Thus, by this) s
+( method, 1/pi is significantly easier to calculate than pi.  This fact) s
+( may be connected with the observation that infinite series for 1/pi) s
+( seem to be simpler and more rapidly convergent than series for pi.) s
+( ) s
+(             Conversion From Decimal) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 28 28
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( ) s
+( is immediate, since, for instance) s
+( ) s
+(                                     1) s
+(      pi  =  3.141592...  =  3 + ---------) s
+(                                        10) s
+(                                 0 + ---------) s
+(                                             1) s
+(                                     1 + ---------) s
+(                                                10) s
+(                                         0 + ---------) s
+(                                                     1) s
+(                                             4 + ---------) s
+(                    1                                   10) s
+(          = 3 + ----------                       0 + ---------) s
+(                       1000                                  1) s
+(                0 + ----------                       1 + ---------) s
+(                             1                                  10) s
+(                   141 + ----------                      0 + ---------) s
+(                                 1000                                1) s
+(                         592 + ---------                     5 + ---------) s
+(                                                                        10) s
+(                                     . . .                       0 + ---------) s
+(                                                                             1) s
+(                                                                     9 + --------) s
+( -) s
+( ) s
+(                                                                            . . .) s
+( ) s
+( ) s
+( ) s
+( and we already know how to deal with non-regular continued fractions.) s
+( ) s
+( ) s
+( ) s
+(             Conflicting Notations) s
+( ) s
+( oo) s
+( matrices) s
+( left to right.) s
+( ) s
+( ) s
+( ) s
+( ) s
+( ) s
+(             Approximations) s
+( ) s
+( Comparison rule: If we call the integer part of a continued fraction) s
+( the 0th term, then we can say that the a \(regular\) continued fraction) s
+( is an increasing function of its even numbered terms, and a decreasing) s
+( function of its odd numbered terms.  Thus, to compare two continued) s
+( fractions, compare the terms at the first position where they differ,) s
+( then reverse the decision if this position is odd numbered.  If one) s
+( continued fraction terminates before differeing from the other, regard) s
+( the shorter one to be suffixed by an infinite term.) s
+( ) s
+( The comparison rule can also follow from the rule for subtracting two) s
+( continued fractions with zero or more initial terms in common.  If) s
+( ) s
+(         w  =  a b c ... p x) s
+( and) s
+(         y  =  a b c ... p z ,) s
+( ) s
+( where x and z are the tails of the two fractions, then) s
+( ) s
+(               Nx + n             Nz + n           N   n) s
+(         w  =  ------  and  y  =  ------ ,  where         is the) s
+(               Dx + d             Dz + d           D   d) s
+( ) s
+( matrix resulting from the input of a b c ... p  to the identity matrix) s
+( ) s
+(                 1   0) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 29 29
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( ) s
+(                 0   1 .) s
+( Then) s
+(                       u \(x - z\)) s
+(        w - y  =   -----------------) s
+(                   \(Dx + d\) \(Dz + d\)) s
+( ) s
+( where u is the determinant Nd - nD = 1 or -1 respective of whether) s
+( there was an even or odd number of inputs to th matrix.  Note that) s
+( this expression is independent of N and n, so we need only compute the) s
+( bottom row of the matrix.  But the bottom row is what you would get by) s
+( dropping the original input term, the computing the top row.  We thus) s
+( save another step.  \(If two continued fractions start with the same) s
+( term, it is clear that their difference is independent of the value of) s
+( that term.\)) s
+( ) s
+( Simplest intervening rational: In a recent popularity poll, parents) s
+( were asked what they thought of the idea of teaching schoolchildren) s
+( continued fractions instead of long division.  Sixty nine percent of) s
+( those responding though it was a communist plot.  What is the smallest) s
+( number of people who could have been polled?) s
+( ) s
+( Presumably, by 69% the pollsters didn't mean exactly 69 of every 100) s
+( but rather some fraction p/q which is at least .685 but less than .695.) s
+( Our problem is to find in the half-open interval [.685, .695\) the) s
+( rational with smallest q.  \(A half-open interval contains its left) s
+( endpoint but not its right one.\)) s
+( ) s
+( If p/q and r/s are distinct nonnegative rationals in lowest terms, we) s
+( will say that p/q is simpler than r/s if p<=r and q<=s.  It may be) s
+( that of p/q and r/s, neither is simpler than the other.  In this case,) s
+( however, there is always some rational numerically between them which) s
+( is simpler than either.  \(E.g., 11/8 is between and simpler than 11/10) s
+( and 13/8.  11/8 is the minimum of the numerators over the minimum of) s
+( the denominators.\)  It follows that there is a simplest rational in) s
+( every finite interval, since there can only be a finite number, pq, of) s
+( rationals simpler than any rational p/q.  If our intervals can include) s
+( oo, we shall treat it as if it were 1/0, thus defining oo to be) s
+( simpler than any rational besides 0 \(i.e., 0/1\).  The motivation for) s
+( this is related to oo having the empty continued fraction.  Now we) s
+( have defined the simplest rational in any interval with nonnegative) s
+( endpoints which does not include both 0 and oo.  We leave it to the) s
+( philosophers to determine which of these two numbers is simplest.) s
+( ) s
+( The pollster problem now becomes: what is the denominator of the) s
+( simplest rational in [.685, .695\) ?  This is easy to solve if we first) s
+( determine that the continued fractions of the two endpoints are) s
+( ) s
+(         .685  =  0 1 2 3+) s
+( and) s
+(         .695  =  0 1 2 5+) s
+( ) s
+( through the first term where they differ.  By 3+ we mean some number) s
+( greater than 3 but less than 4, and similarly for 5+.  From this) s
+( comparison rule, all of the numbers in the interval have continued) s
+( fractions = 0 1 2 x, where x is in the interval \(3+, 5+], what ever) s
+( those two numbers happen to be.  The simplest number in this interval) s
+( is 4.  The simplest rational in [.685, .695\) is therefore the number) s
+( whose continued fraction is) s
+( ) s
+(         0 1 2 4  = 9/13  .\(692307\)) s
+( ) s
+( so as few as 13 people may have been polled, provided that they all) s
+( responded.  This rationale is amplified on the page after next.) s
+( ) s
+( \(I can't resist pointing out that dividing 13 into 9 is a great example of) s
+( the tail chasing trick mentioned on page 1:  after producing the digits 6 and) s
+( 9, the remainder is 3, which is 1/3 of the initial "remainder" \(namely, the) s
+( dividend\) 9.  This means that we can compute the rest of the quotient digits) s
+( 230769... simply by dividing 3 into 692307... .\)) s
+( ) s
+( Of course, since we really only wanted the denominator 13, we could have) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 30 30
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( skipped the computation of the numerator 9:) s
+( ) s
+(              4   2   1   0) s
+(        13    3   1   1   0   1 ,) s
+( ) s
+( \(relying on the input process to produce lowest terms.\)  But then if we) s
+( wanted to check the answer, we would have to multiply 13 by .69 and see) s
+( if the result was very near an integer.) s
+( ) s
+( The computation of two nearby continued fractions can be streamlined) s
+( considerably, if we do not wish to go much beyond where they disagree.) s
+( Begin an ordinary Euclid output process on one number \(for variety, we) s
+( choose the larger\), while keeping track of the separation interval, as) s
+( we did with the gas constant.  For .695/1 and .685/1,) s
+( ) s
+(         .695  -.010) s
+(        1.000   .000   0) s
+(         .695  -.010   1) s
+(         .305  +.010   2) s
+(         .085  -.030   3) s
+(         .050  +.100) s
+( ) s
+( stopping when the magnitude of the interval width exceeds the last remainder.) s
+( At this stage, the last term would have been different, had we used the) s
+( other endpoint.  But we can easily switch over to computing the other) s
+( endpoint by adding in the interval widths on whichever two consecutive) s
+( lines we wish:) s
+( ) s
+(         .695  -.010) s
+(        1.000   .000   0) s
+(         .695  -.010   1) s
+(         .305  +.010   2   .315) s
+(         .085  -.030   3   .055  5) s
+(         .050  +.100       .040) s
+( ) s
+( Since both contnued fractions were infinished when we stopped them,) s
+( we have shown, with very little manipulative effort, that) s
+( ) s
+(         .695  =  0 1 2 3+) s
+( and) s
+(         .685  =  0 1 2 5+) s
+( ) s
+( as required.) s
+( ) s
+( Fact \(theorem\):  If A and B are positive rationals, with A simpler than B,) s
+( then C + 1/A is simpler than C + 1/B, where C is a nonnegative integer.) s
+( ) s
+( But C + 1/A and C + 1/B are what you get by prefixing the term C to) s
+( the continued fractions for A and B.  This means that in determining) s
+( which of two \(terminating\) continued fractions represents the simpler) s
+( rational, we can ignore any initial sequence of terms that they have) s
+( in common.  The continued fraction of the simplest rational included) s
+( in an interval consists of this common initial term sequence, to which) s
+( is appended the continued fraction of the simplest rational in the) s
+( interval determined by erasing the common initial sequence from the) s
+( original endpoints.) s
+( ) s
+( We characterize an interval as a pair of endpoints in [0, oo].  Associated) s
+( with each endpoint is a flag saying whether or not the endpoint is included) s
+( in the interval.  When we modify the continued fraction of an endpoint to) s
+( produce a new endpoint, we will be careful not to modify this flag.) s
+( ) s
+( Recipe #1 for the simplest included rational: Write as continued) s
+( fractions the two endpoints of the interval in question, stopping at) s
+( least one term beyond the one where they first disagree, except that) s
+( if one of them terminates before disagreeing, suffix to it a term of) s
+( oo.  Set aside whatever initial sequence of terms they have in common.) s
+( These terms will be the initial ones of the simplest included) s
+( rational, as well as all of the other numbers in the interval.  Now we) s
+( need only find the simplest rational in an interval whose endpoints) s
+( have continued fractions which start with different terms.  \(If we) s
+( have set aside all of the terms of one endpoint, we are left with an) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 31 31
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( explicit oo.\)  The only way this new interval can fail to contain oo) s
+( or at least one integer is if the upper endpoint is itself an exact) s
+( integer, but is excluded by virtue of being the tail of an endpoint) s
+( which was excluded in the original problem.  It must also be the case) s
+( that the lower endpoint has an initial term 1 less than the upper one.) s
+( The easiest thing to do in this case is to rewrite the single term) s
+( which is the upper endpoint as the previous integer followed by a 1,) s
+( e.g., 3 1 instead of 4.  Then we again have two continued fractions) s
+( which start with the same term, and can proceed with the recipe.) s
+( ) s
+( Recipe #2 for simplest included rational: If the interval contains oo,) s
+( return the answer oo.  IF the interval contains any integers, return) s
+( the smallest one.  Otherwise let g be the greatest integer in the) s
+( smaller endpoint.  Return g + the reciprocal of the simplest rational) s
+( in the inttefval determined by reciprocating the fraction parts of the) s
+( original endpoints.) s
+( ) s
+( The reason Recipe #2 sounds easier is that it avoids the question of how) s
+( to do the arithmetic.  When it comes down to doing the work, Recipe #1) s
+( will save you plenty.) s
+( ) s
+( Here is an example which illustrates the tricky points.  A) s
+( sportscaster remarks that Joe diMolisho batted over .312 last year.) s
+( Unfortunately, the sportscaster is notoriously pro diMolisho, so you) s
+( can bet theat if Joe batted as much as .3125, his friend in the booth) s
+( would have said "Joe batted .313 last year".  At least we know Joe saw) s
+( a fair amount of action, by determining the simplest rational in the) s
+( open interval \(.312, .3125\) \(both endpoints excluded\):) s
+( ) s
+(          .3120  +.0005) s
+(         1.000    .0000  0) s
+(          .3120  +.0005  3) s
+(          .0640  -.0015  4) s
+(          .0560  +.0065  1   .0625) s
+(          .0080  -.0080  7   .0000  oo) s
+(          .0000  +.0625) s
+( ) s
+( thus establishing that) s
+( ) s
+(         .312   =  0 3 4 1 7) s
+( and) s
+(         .3125  =  0 3 4 1 oo  =  0 3 5 .) s
+( ) s
+( Notice that our streamlined algorithm conveniently produced the continued) s
+( fraction for .3125 in just the \(nonstandard\) form we needed for the) s
+( recipe.  We have only to find the simplest rational in \(7, oo\), which is) s
+( 8 because the oo is not in the interval.  So, dMolisho's simplest) s
+( possible performance ratio is) s
+( ) s
+(         0 3 4 1 8  = 44/141  =  .312051...) s
+( ) s
+( indicating at least 141 at bats.) s
+( ) s
+( Rounding rule: When you discard the tail of a continued fraction, you) s
+( effectively subtract from the last term retained the reciprocal of the) s
+( quantity represented by the tail.  This reciprocal is greater than 1/2) s
+( iff the first term of the tail is 1, indicating that the last retained) s
+( term should be incremeted just when the first discarded term is 1.) s
+( Another way to look at it is that a final 1 can always be combined) s
+( into the preceding term, so why truncate just before a 1 when) s
+( truncating just after it will give a more accurate estimate with the) s
+( same number of terms?) s
+( ) s
+( Best truncations: Whether or not you round, a truncated continued) s
+( fraction has the property of being the closest rational approximation) s
+( to the untruncated number, subject to having such a small numerator.) s
+( \(No simpler rational comes as close.\)  The only other rationals with) s
+( this property can all be formed by reducing the last term of the) s
+( truncated fraction by up to 50%.  For example, after 355/113, what is) s
+( the next better rational approximation to pi?) s
+( ) s
+(            pi   = 3 7 15 1 292 1 1 1 2 1 . . .) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 32 32
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( and) s
+(         355/113 = 3 7 15 1) s
+( ) s
+( so 103993/33102 = 3 7 15 1 292 is better than 355/113 \(and by the) s
+( rounding rule, 104348/33215 = 3 7 15 1 293 is better still\), but are) s
+( there any approximations of intermediate accuracy and simplicity?) s
+( Indeed, reducing the terminal 292 to any integer greater than 292/2 =) s
+( 146 will produce intermediate approximations, while the approximation) s
+( 51808/16491 = 3 7 15 1 145 is actually worse than 355/113.  To test) s
+( the borderline case of 52141/16604 = 3 7 15 1 146, we perform the) s
+( following simple but mysterious ritual: write pi as) s
+( ) s
+(         3 7 15 1 146 0 146 1 1 2 1 . . .  .) s
+( ) s
+( Then, delete the first term and fold the left-hand portion over the 0:) s
+( ) s
+(         146 1 15 7) s
+(         146 1  1 1 2 1 . . .  .) s
+( ) s
+( Because the upper continued fraction numerically exceeds the lower one) s
+( \(by the comparison rule\), 52163/16604 = 3 7 15 1 146 is the next better) s
+( approximation to pi after 355/113 \(!\)  The improvement, however, is) s
+( microscopic:  less than 2 parts in a billion.) s
+( ) s
+( Mathematical explanation:  suppose we wish to truncate) s
+( ) s
+(   z  =  a  a  ... a  a    a    ...) s
+(          0  1      i  i+1  i+2) s
+( ) s
+( by discarding the terms beginning with term i+2.  How far can we reduce term) s
+( i+1 before it would be better to simply discard it too?  Define) s
+( ) s
+(   N) s
+(   -  =  a  a  ... a           x  =  a    a    ...) s
+(   D      0  1      i                 i+1  i+2) s
+( ) s
+(   n) s
+(   -  =  a  a  ... a) s
+(   d      0  1      i-1) s
+( ) s
+(   Nd - Dn  =  u  \(u = +or- 1\)) s
+( ) s
+( Then) s
+(         Nx + n) s
+(   z  =  ------) s
+(         Dx + d) s
+( ) s
+(    N  n       a   1   a   1       a   1) s
+(   \(    \)  =  \( 0   \) \( 1   \) ... \( i   \)) s
+(    D  d       1   0   1   0       1   0) s
+( ) s
+( Transposing both sides,) s
+( ) s
+(    N  D       a   1       a   1   a   1) s
+(   \(    \)  =  \( i   \) ... \( 1   \) \( 0   \)) s
+(    n  d       1   0       1   0   1   0) s
+( ) s
+( implying) s
+( ) s
+(   D) s
+(   -  =  a  ... a  a) s
+(   d      i      2  1) s
+( ) s
+( The error introduced by replacing the tail x by the single term p is) s
+( ) s
+(    Nx + n     Np + n         u \(x - p\)) s
+(    ------  -  ------   =  ----------------) s
+(    Dx + d     Dp + d      \(Dx + d\)\(Dp + d\)) s
+( ) s
+( while the error introduced by simply discarding the tail is) s
+( ) s
+(    N     Nx + n         u) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 33 33
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+(    -  -  ------  =  ----------) s
+(    D     Dx + d     D \(Dx + d\)) s
+( ) s
+( The crossover point is when these two errors are equal, i.e., when) s
+( ) s
+(        d) s
+(    p + -  =  x - p) s
+(        D) s
+( ) s
+( or) s
+( ) s
+(    p a  ... a  a   =  \(a   -p\)  a    ...) s
+(       i      0  1       i+1      i+2) s
+( ) s
+( so if we think of this truncation as chopping off the continued) s
+( fraction "in the middle of a term", we have the following peculiar yet) s
+( simple rule: to test whether our chop has produced the best rational) s
+( approximation possible with such a small numerator, reverse the) s
+( sequence of terms that we kept, and discard what was originally the) s
+( zeroth term.  Compare this, as a continued fraction, with the part we) s
+( chopped off \(x-p\).  If the part we chopped off is greater than or) s
+( equal to the reversed part, we would have done better to chop off the) s
+( whole term.) s
+( ) s
+( ) s
+( ) s
+(             Continued Logarithms) s
+( ) s
+( There is a mutation of continued fractions, which I call continued) s
+( logarithms, which have several advantages over regular continued) s
+( fractions, especially for computational hardware.  As with ordinary) s
+( continued fractions, each number and subexpression will be a) s
+( microprocess which describes itself a little at a time, but instead of) s
+( continued fraction terms, our description language will have only two) s
+( words, "0" and "1".  A 1 means "I was at least 2, so I halved myself".) s
+( A 0 means "I was between 1 and 2, so I subtracted 1 and reciprocated) s
+( myself \(so now I am > 1\)".  For example, we compute the continued) s
+( logarithm of 100/2.54 :) s
+( ) s
+( 11111   100/2.54  ->  50/2.54  ->  25/2.54  ->  25/5.08  ->  25/10.16  ->  25/20) s
+( .32) s
+( ) s
+( 0       25/20.32 - 1  =  4.68/20.32) s
+( ) s
+( 11      20.32/4.68  ->  10.16/4.68  ->  5.08/4.68) s
+( ) s
+( 0       5.08/4.68 - 1  =  .40/4.68) s
+( ) s
+( 111     4.68/.40  ->  2.34/.40  ->  1.17/.40  ->  1.17/.80) s
+( ) s
+( 0       1.17/.80 - 1  =  .37/.80) s
+( ) s
+( 1       .80/.37  ->  .40/.37) s
+( ) s
+( 0       .40/.37 - 1  =  .03/.37) s
+( ) s
+( 111     .37/.03  ->  .37/.06  ->  .37/.12  ->  .37/.24) s
+( ) s
+( 0       .37/.24 - 1  =  .13/.24) s
+( ) s
+( 0       .24/.13 - 1  =  .11/.13) s
+( ) s
+( 0       .13/.11 - 1  =  .02/.11) s
+( ) s
+( 11      .11/.02  ->  .11/.04  ->  .11/.08) s
+( ) s
+( 0       .11/.08 - 1  =  .03/.08) s
+( ) s
+( 1       .08/.03  ->  .04/.03) s
+(          ) s
+( 0       .04/.03 - 1  =  .01/.03) s
+( ) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 34 34
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( 1       .03/.01  ->  .03/.02) s
+( ) s
+( 0       .03/.02 - 1 =  .01/.02) s
+( ) s
+( 1       .02/.01  ->  .01/.01) s
+( ) s
+( 0       .01/.01 - 1  =  0) s
+( ) s
+(         oo) s
+( ) s
+( ) s
+( ) s
+( so 100/2.54 = 111110110111010111000110101010 .  Alternatively, we) s
+( could write it as the sequence of lengths of bursts of 1s:) s
+( 5,2,3,1,3,0,0,2,1,1,1.  In the latter representation, each term is the) s
+( integer part of the log base 2 of the number remaining to be) s
+( described.  As with regular continued fractions, oo is the empty) s
+( sequence, rationals are the finite sequences, and many \(but not all!\)) s
+( quadratic surds have periodic sequences.  Unlike regular continued) s
+( fractions, integers can have long sequences, and Hurwitz numbers seem) s
+( patternless.  The direct expression of a continued logarithm as a) s
+( nonregular continued fraction:) s
+( ) s
+(                      5) s
+( 100         5       2) s
+( ----   =   2   + ---------) s
+( 2.54                      2) s
+(                   2      2) s
+(                  2  + ---------) s
+(                                3) s
+(                        3      2) s
+(                       2  + ---------) s
+( ) s
+(                                 .) s
+(                                  .) s
+(                                   .) s
+( ) s
+(                                         1) s
+(                                1       2) s
+(                               2  + ---------) s
+(                                         1) s
+(                                        2   .) s
+( ) s
+( That is, each denominator and succeeding numerator must be equal) s
+( powers of 2.) s
+( ) s
+(                 Why Use Continued Logarithms?) s
+( ) s
+( The primary advantage is the conveniently small information parcel.) s
+( The restriction to integers of regular continued fractions makes them) s
+( unsuitable for very large and very small numbers.  The continued) s
+( fraction for Avogadro's number, for example, cannot even be determined) s
+( to one term, since its integer part contains 23 digits, only 6 of) s
+( which are known.  Also, mechanisms for handling such gigantic terms) s
+( would have to be built, only to lie dormant throughout most) s
+( computations, since huge terms are very rare except at the beginning) s
+( of huge numbers.  By contrast, the continued logarithm of Avogadro's) s
+( number begins with its binary order of magnitude, and only then begins) s
+( the description equivalent to the leading digits--a sort of recursive) s
+( version of scientific notation.) s
+( ) s
+( ) s
+( Another problem related to huge terms could be called the) s
+( .999... problem.  Suppose you were using continued fraction arithmetic) s
+( to multiply sqrt\(2\) = 1 2 2 2 ... by sqrt\(2\), but without any) s
+( assurance that the two numbers are, in fact, identical.  This means) s
+( that at any time one of the input terms might turn out to be something) s
+( other than 2.  Depending upon whether this occurs on an even or odd) s
+( term, the numerical value of the product will be 2.0000+ or 1.9999+,) s
+( or, as continued fractions) s
+( ) s
+(         2 <gigantic term> ...) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 35 35
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( or      1 1 <gigantic term> ...) s
+( ) s
+( But until that deviation occurs \(maybe never\), the first term) s
+( of the continued fraction is in doubt.  A partial solution to) s
+( this problem is to forcibly egest a 2 when it becomes clear) s
+( that this module is unduly stuck.  If we are wrong, the gigantic) s
+( term will simply come out negative.  What we would like to) s
+( say now is "regard my next term as infinite until further) s
+( notice", hoping that we are indeed through.  But this is not) s
+( enough for the functions which depend on our output, to) s
+( which they will eventually become extremely sensitive.  They) s
+( will need to know "just how close to infinity are you?", but) s
+( we, faced with an ever growing number with oscillating sign,) s
+( have no way to answer.  We do not even know when we should) s
+( input more 2s \(at least we hope they are 2s\).  The information-) s
+( drivenness has broken down.) s
+( ) s
+( With continued logarithms, there is no problem at all, if we regard a) s
+( 1 to mean "my MAGNITUDE was at least 2, so I halved myself".  Our) s
+( function will simply produce 1s as long as the input patterns hold,) s
+( and a constant stream of 1s is at least as informative to a superior) s
+( function as any other string.  Simply stated, continued logarithms) s
+( allow us to say that the first digit of infinity is 1.  A slight) s
+( embarrassment could occur if it turned out that one of the inputs was) s
+( really < sqrt\(2\), since we have not included in our language a) s
+( mechanism for negative numbers \(in this case it would serve as an) s
+( expletive\).  We will see to this later.) s
+( ) s
+(                 The Simple Details) s
+( ) s
+( Suppose you are given the integers a, b, c, and d, and wish to) s
+( compute the homographic function) s
+( ) s
+(               a x + b) s
+(         y  =  -------) s
+(               c x + d) s
+( ) s
+( ) s
+( ) s
+( with continued logarithms.  For each x input of 1, y's value must be) s
+( preserved by doubling a and c, or if possible, halving b and d.  This) s
+( is because x has halved itself.  When x announces that it has reduced) s
+( itself by 1, add a to b and c to d.  When x announces it has) s
+( reciprocated itself, interchange a with b and c with d.  Equally easy) s
+( is output of y.  The knowledge that x is > 1 gives us) s
+( ) s
+(                    a + b       a) s
+(         y between  -----  and  - ,) s
+(                    c + d       c) s
+( ) s
+( provided c+d and d have the same sign.  If both of these quantities) s
+( are >= 2, y can emit a 1 and halve itself by doubling c and d, or if) s
+( possible, halving a and b.  If the two ratios lie between 1 and 2, y) s
+( decrements itself by subtracting c from a and d form b, then) s
+( reciprocates itself by interchanging a with c and b with d and finally) s
+( announces all this by emitting a 0.) s
+( ) s
+( Although these operations are not as nice on paper, they are) s
+( beautifully suited to binary machines, requiring only shift, add,) s
+( subtract, exchange, and compare-for-greater.) s
+( ) s
+( ) s
+( ) s
+( To illustrate the power and simplicity of this mechanism, we) s
+( will compute the continued log of sqrt\(6\) from first principles,) s
+( by solving) s
+( ) s
+(             6) s
+(         y = - .) s
+(             y) s
+( ) s
+( Setting up the matrix for 6/y,) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 36 36
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( ) s
+(                                 0   6) s
+( ) s
+(                                 1   0) s
+( ) s
+( we test whether y is greater or less than 2 by plugging in y = 2) s
+( to get 3.  The fact that the value went up instead of down says) s
+( that y > 2, since by Newton's method, the average is closer than) s
+( either.  So we outpulse and receive a 1, meaning to halve a and b,) s
+( then double a and c.) s
+( ) s
+(                                 0   3) s
+( ) s
+(                                 2   0    1) s
+( ) s
+( Now plugging in y = 2 gives 3/4, so y < 2 and we oupulse and receive) s
+( a 0, which is just like outputing and inputing a term of 1 with) s
+( regular continued fractions.  \(In fact the golden ratio, whose) s
+( continued fraction is all 1s, has continued log all 0s.\)) s
+( ) s
+(                                 0   3) s
+( ) s
+(                             2   2   0    10) s
+( ) s
+(                             1  -2   3) s
+( ) s
+( Here the assumption y >= 2 fulfills itself, while 1 <= y < 2 will) s
+( drive) s
+( ) s
+(         2 y + 2) s
+(         -------) s
+(          y - 2) s
+( ) s
+( negative.  So again we emit and receive a 1 by halving a and b, then) s
+( doubling a and c.) s
+( ) s
+(                                 0   3) s
+( ) s
+(                             2   1   0    10) s
+( ) s
+(                             2  -2   3    1) s
+( ) s
+( ) s
+( ) s
+( Here again y > 2, requiring another 1, but since b is odd, we must) s
+( double c and d, then also double a and c.) s
+( ) s
+(                                 0   3) s
+( ) s
+(                             4   1   0    10) s
+( ) s
+(                             8  -4   3    11) s
+( ) s
+( Here y < 2, ending another 1 burst.) s
+( ) s
+(                                 0   3) s
+( ) s
+(                             4   1   0    10) s
+( ) s
+(                         4   8  -4   3    110) s
+( ) s
+(                         1  -4   5) s
+( ) s
+( Here y must be > 2 \(in fact > 4\) to avoid chasing the negative root,) s
+( and this time we can process the 1 by halving a and b, then halving) s
+( b and d.) s
+( ) s
+(                                 0   3) s
+( ) s
+(                             4   1   0    10) s
+( ) s
+(                         2   2  -4   3    110) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 37 37
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( ) s
+(                         1  -2   5        1) s
+( ) s
+( But the matrix was in this state right after emitting the first 0,) s
+( so) s
+( ) s
+(         sqrt\(6\) = 10\(1101\) .) s
+( ) s
+( In computational practice, we will need two other words besides 1 and) s
+( 0 in the language.  For negative numbers we could have either "-" for) s
+( "I negated myself" or "+" for "I incremented myself".  For fractions) s
+( initially < 1, "*" would mean "I doubled myself", the opposite of "1".) s
+( Also, for finite inputs, we formally require an end-of-string mark,) s
+( which is logically oo, since the empty continued logarithm, like the) s
+( empty continued fraction, represents +or- oo.  Continued logs can also) s
+( represent oo as an endless burst of 1s, if it results from) s
+( nonterminating inputs.) s
+( ) s
+( ) s
+( ) s
+(                     The Continued Logarithm of pi etc.) s
+( ) s
+( ) s
+( ) s
+(                     Architecture) s
+( ) s
+( If it is possible to make very long parallel adders, it should be) s
+( possible to make a high-precision, ultrahigh speed arithmetic) s
+( processor based on continued logarithms.  It would be an extremely) s
+( parallel device consisting entirely of registers and having no static) s
+( memory.  Such an architecture is feasible because, within a given) s
+( bihomographic octet of registers, each bit must connect to only five) s
+( others.  Here is why.) s
+( ) s
+( Schematically, we can think of our 2 by 2 by 2 matrix as a cube with a) s
+( register at each vertex.  Into this cube flow the two bit streams) s
+( describing the operands x and y, and out of it flows the bit stream of) s
+( the answer, z.  No matter which of the three possible transactions we) s
+( perform, the additions, subtractions, comparisons, and exchanges take) s
+( place between registers joined by the edges of this cube.  In fact, we) s
+( could imagine that within each edge was the control logic for the) s
+( transaction determined by that edge's direction.  Thus each register) s
+( bit need only talk to its three counterparts in the x, y, and z) s
+( directions, plus its left and right neighbors \(for shifting and) s
+( carrying\).) s
+( ) s
+( Instead of wasting time testing which of the three possible) s
+( transactions is most relevant, we will synchronously and cyclicly) s
+( input x, input y, and output z on each major cycle.  This will) s
+( simplify the hardware at the cost of diluting the information density) s
+( of the output stream by a small percentage, due to the occasional) s
+( retraction of a premature output.  Sadly, this will also cripple our) s
+( automatic error analysis, but such is the price of speed.  We could) s
+( gain even more speed by making output decisons before the carries have) s
+( settled, since this should introduce only slight further dilution.) s
+( ) s
+( After our octet has received about 2n inputs and produced about n) s
+( outputs, each of our registers will contain about n/4 significant) s
+( bits.  Carry times will grow as log n, so our quotient or product or) s
+( whatever will have taken time proportional to n log n, like the FFT) s
+( algorithms, but with a far smaller constant of proportionality.) s
+( ) s
+( ) s
+( ) s
+( The four main advantages of this scheme over the FFT schemes are:) s
+( ) s
+( 1\) Simplicity--it is hardly more than a "smart memory", with a minimal) s
+( form of processor distributed throughout.) s
+( ) s
+( 2\) Speed--we beat the traditional cost factor of dozens or even) s
+( hundreds for multiprecision, with output bits typically separated by) s
+( only slightly more than an integer add time.  With all of the internal) s
+/side 0 def
+login prlogin
+showpage
+%%Page: 38 38
+/x0 upperx 0 get bodymargin add def
+/y0 uppery 0 get bodymargin bodyfontsize add 0 add sub def
+x0 y0 moveto
+bodyfont setfont
+( thrashing, it may waste energy, but not time.) s
+( ) s
+( 3\) Consequently, the crossover point is toward much smaller numbers,) s
+( thus encompassing more applications.) s
+( ) s
+( 4\) Additional parallelism--we can interconnect networks of these) s
+( octets which evaluate whole arithmetic expressions in parallel.  In) s
+( fancy models, we could imagine "octet pools" containing allocatable) s
+( segments of register octets, to be dynamically distributed as register) s
+( contents grew and shrank.  Fancy or not, it should be possible to) s
+( sustain ultraprecise computations to megabit accuracy, at) s
+( megabit/second rates, using something not much more complicated than a) s
+( large semiconductor memory.  More conventional processors can not come) s
+( anywhere near sustaining such an ouput rate since most of their bits) s
+( are lying dormant in storage for relatively long periods.  Even Illiac) s
+( IV using FFT multiplication can only provide pi in megabit quantities) s
+( at about 5 kilobits/sec, and only then with prodigious programming) s
+( effort.) s
+( ) s
+( The key idea is that with every bit of storage there be the associated) s
+( logic to operate on that bit.  The continued logarithm formulation) s
+( restricts the number of data paths to a conceivably practical level.) s
+( ) s
+( ) s
+( ) s
+( ) s
+/side 0 def
+login prlogin
+showpage
+
+%%Trailer
+%%Pages: 38
+docsave restore end
